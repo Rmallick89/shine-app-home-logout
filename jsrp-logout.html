@@ -1146,17 +1146,6 @@ body { background: var(--surface-base, var(--surface-base)); }
       display: none; place-items: center;
     }
 .jsrp-m-floater-action .badge.show { display: grid; }
-.jsrp-m-fade-mask {
-      position: fixed;
-      left: 0; right: 0;
-      bottom: 0;
-      height: 88px;
-      background: linear-gradient(to top, var(--surface-base, var(--surface-base)) 22%, rgba(250,249,246,0));
-      pointer-events: none;
-      z-index: 55;
-      transition: opacity 220ms ease;
-    }
-.jsrp-m-fade-mask.is-hidden { opacity: 0; }
 .jsrp-m-sort-bd, .jsrp-m-filter-bd {
       position: fixed; inset: 0;
       background: rgba(13,17,23,0.30);
@@ -1648,6 +1637,7 @@ body { background: var(--surface-base, var(--surface-base)); }
       padding-bottom: calc(var(--spacing-layout-sm) + env(safe-area-inset-bottom, 0px));
     }
 .jsrp-m-nudge-sheet.show { transform: translateY(0); }
+    .jsrp-m-nudge-sheet[hidden] { display: none; }
 .jsrp-m-nudge-handle {
       width: 40px; height: 4px;
       background: var(--stroke-base);
@@ -1886,11 +1876,9 @@ body { background: var(--surface-base, var(--surface-base)); }
     </div>
 
     <!-- Floating bottom capsule — Sort + Filter actions, sticky at the
-         bottom of the JSRP screen. Cards scroll behind it. The fade mask
-         softens the visual collision between scrolling cards and the
-         capsule. (Markup ported from index.html mobile reference; class
+         bottom of the JSRP screen. Cards scroll behind it; only the
+         capsule itself carries a shadow (no bottom fade). (Markup ported from index.html mobile reference; class
          prefix renamed .jsrp- → .jsrp-m- for mobile scoping.) -->
-    <div class="jsrp-m-fade-mask"></div>
     <div class="jsrp-m-floater">
       <button class="jsrp-m-floater-action btn btn--md btn--shape-full btn--ghost" id="jsrpMSortBtn" aria-label="Sort">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
@@ -2175,7 +2163,7 @@ body { background: var(--surface-base, var(--surface-base)); }
         // After the transition, restore [hidden] for a11y / focus order.
         setTimeout(function(){
           if (!el.classList.contains('show')) el.hidden = true;
-        }, 260);
+        }, 340);
       }
 
       // Backdrop click dismisses
