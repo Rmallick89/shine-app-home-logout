@@ -125,5 +125,5 @@ On submit the order is:
 
 | Screen | Trigger | Mode |
 |---|---|---|
-| App home (logged out) — `App homepage hero/app-home-logout.html` | Explore jobs pill | new |
-| JSRP (app), next | Edit search / sticky bar | edit |
+| App home (logged out) — `index.html` | Explore jobs pill → submit goes to the JSRP (`resultsUrl`) | new |
+| App JSRP (logged out) — `jsrp-logout.html` | Edit search (prefilled with the live query, location, experience) → results update in place | edit |
