@@ -9,7 +9,10 @@ app-home-logout.html        page markup (Shine logo + icons are inline SVG)
 css/app-home-logout.css     DS tokens (mobile column), components, page styles
 js/app-home-logout.js       headline reel, bubble drift, logo shuffle, grey accents, roles tooltip
 assets/logos/*.svg          company logos (viewBox cropped to the mark)
+components/search-modal/    reusable "What's next for you?" search modal (css + js)
 ```
+
+**Explore jobs** opens the search modal (`data-shine-search data-ssm-source="home"`). The component is app-wide: any page includes `components/search-modal/search-modal.css` + `.js` and adds `data-shine-search` to a trigger. Results arrive as a `shine:search` DOM event — see `components/search-modal/README.md`.
 
 No build step and no dependencies — the only external request is the Plus Jakarta Sans font from Google Fonts.
 
