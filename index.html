@@ -3,6 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script data-ios-nozoom>
+  /* iOS Safari auto-zooms the page when a focused field's text is under 16px
+     (search modal, filter search). Adding maximum-scale=1 on iOS / iPadOS only
+     stops that auto-zoom without touching the design. Pinch-to-zoom still works
+     (iOS ignores scale limits for user gestures since iOS 10), and Android —
+     which never auto-zooms — keeps its viewport untouched. */
+  (function () {
+    var iOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);   // iPadOS "desktop" mode
+    var m = document.querySelector('meta[name="viewport"]');
+    if (iOS && m && !/maximum-scale/.test(m.content)) m.content += ', maximum-scale=1';
+  })();
+</script>
 <meta name="description" content="Find your next job on Shine — 12,000+ companies hiring this week.">
 <meta name="theme-color" content="#FAF9F6">
 <title>Shine — Find your next job</title>

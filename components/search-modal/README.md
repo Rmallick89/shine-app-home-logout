@@ -17,6 +17,21 @@
 
 No markup to paste. The modal mounts itself into `<body>`.
 
+### iOS Safari: no zoom on focus
+
+The fields use 14px text, and iOS Safari zooms the whole page when a focused field's text is under 16px. Every host page puts this snippet **right after its viewport `<meta>`**. It adds `maximum-scale=1` on iOS/iPadOS only. Pinch-to-zoom still works, because iOS ignores scale limits for user gestures. Android, which never auto-zooms, is left untouched.
+
+```html
+<script data-ios-nozoom>
+  (function () {
+    var iOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);   // iPadOS "desktop" mode
+    var m = document.querySelector('meta[name="viewport"]');
+    if (iOS && m && !/maximum-scale/.test(m.content)) m.content += ', maximum-scale=1';
+  })();
+</script>
+```
+
 ## Open it
 
 **Declarative** (preferred). Any element, present now or added later:
