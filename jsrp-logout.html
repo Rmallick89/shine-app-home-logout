@@ -591,16 +591,8 @@ body.on-it { background:#0A0E14; }
 
 
 
-.nudge-bd {
-    position: fixed; inset: 0;
-    background: rgba(13, 17, 23, 0.45);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    opacity: 0; pointer-events: none;
-    transition: opacity 220ms ease;
-    z-index: 90;
-  }
-.nudge-bd.show { opacity: 1; pointer-events: auto; }
+
+
 .nudge-close {
     position: absolute;
     top: 16px; right: 16px;
@@ -1089,421 +1081,84 @@ body { background: var(--surface-base, var(--surface-base)); }
     }
 .jsrp-m-jc-apply svg { width: var(--size-icon-md); height: var(--size-icon-md); }
 .jsrp-m-faq-item:not(.is-open) .jsrp-m-faq-a { display: none; }
-.jsrp-m-floater {
-      position: fixed;
-      left: 50%;
-      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-      transform: translateX(-50%);
-      background: var(--surface-raised);
-      border: var(--stroke-thin) solid var(--stroke-base);
-      color: var(--content-base);
-      border-radius: var(--radius-full);
-      padding: var(--spacing-inset-xs);
-      display: inline-flex; align-items: center; gap: 0;
-      box-shadow:
-        0 16px 38px -10px rgba(13,17,23,0.22),
-        0 6px 14px -4px rgba(13,17,23,0.10);
-      z-index: 60;
-      
-      transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1),
-                  opacity 220ms ease;
-    }
-.jsrp-m-floater.is-hidden {
-      transform: translateX(-50%) translateY(140%);
-      opacity: 0;
-      pointer-events: none;
-    }
-.jsrp-m-floater-action {
-      background: transparent; border: none;
-      height: 40px; padding: 0 24px;
-      border-radius: var(--radius-full);
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--font-brand);
-      font-weight: 800; font-size: 14px;
-      color: var(--content-base); cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      transition: background 120ms;
-    }
-.jsrp-m-floater-action:active { background: rgba(13,17,23,0.06); }
-.jsrp-m-floater-action svg { width: var(--size-icon-md); height: var(--size-icon-md); }
-.jsrp-m-floater-action.has-badge { padding-right: 32px; }
-.jsrp-m-floater-divider {
-      width: 1px; height: 20px;
-      background: var(--stroke-muted);
-      margin: 0 2px;
-      flex-shrink: 0;
-    }
-.jsrp-m-floater-action .badge {
-      position: absolute;
-      top: 4px; right: 8px;
-      min-width: 18px; height: 18px; padding: 0 4px;
-      background: var(--content-base); color: var(--content-on-fill-dark);
-      border: var(--stroke-thick) solid var(--surface-raised);
-      border-radius: var(--radius-full);
-      font-family: var(--font-brand);
-      font-size: 10px; font-weight: 800;
-      display: none; place-items: center;
-    }
-.jsrp-m-floater-action .badge.show { display: grid; }
-.jsrp-m-sort-bd, .jsrp-m-filter-bd {
-      position: fixed; inset: 0;
-      background: rgba(13,17,23,0.30);
-      opacity: 0; pointer-events: none;
-      transition: opacity 240ms ease;
-      z-index: 100;
-    }
-.jsrp-m-sort-bd.show, .jsrp-m-filter-bd.show { opacity: 1; pointer-events: auto; }
-.jsrp-m-sort-sheet {
-      position: fixed;
-      left: 0; right: 0;
-      bottom: 0;
-      z-index: 101;
-      background: var(--surface-raised);
-      border-radius: var(--radius-3xl, 28px) var(--radius-3xl, 28px) 0 0;
-      padding: 0;
-      padding-bottom: calc(var(--spacing-layout-sm) + env(safe-area-inset-bottom, 0px));
-      box-shadow: 0 -16px 48px -8px rgba(13,17,23,0.30);
-      transform: translateY(100%); opacity: 0; pointer-events: none;
-      transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1), opacity 240ms ease;
-      max-height: 90vh;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-    }
-.jsrp-m-sort-sheet.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
-.jsrp-m-sort-sheet-h {
-      
-      padding: 16px var(--spacing-layout-sm) 20px;
-      display: flex; align-items: center; justify-content: space-between;
-      font-family: var(--font-brand); font-weight: 800; font-size: 16px;
-      color: var(--content-base);
-    }
-.jsrp-m-sort-close {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--color-system-warm-neutral-200, var(--surface-base)); border: none;
-      display: grid; place-items: center; cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-.jsrp-m-sort-close svg { width: var(--size-icon-xs); height: var(--size-icon-xs); color: var(--content-base); }
-.jsrp-m-sort-row {
-      display: flex; align-items: center; gap: var(--spacing-inline-md);
-      
-      padding: 12px var(--spacing-layout-sm); border-radius: var(--radius-lg);
-      background: transparent; border: none; cursor: pointer; width: 100%;
-      -webkit-tap-highlight-color: transparent;
-    }
-.jsrp-m-sort-row:active { background: var(--color-system-warm-neutral-200, var(--surface-base)); }
-.jsrp-m-sort-row .lbl {
-      flex: 1; text-align: left;
-      font-family: var(--font-brand); font-weight: 700; font-size: 14px;
-      color: var(--content-base);
-    }
-.jsrp-m-sort-row .check {
-      width: 18px; height: 18px; border-radius: 50%;
-      border: var(--stroke-thick) solid var(--stroke-base); flex-shrink: 0;
-      display: grid; place-items: center;
-    }
-.jsrp-m-sort-row.is-on .check { border-color: var(--content-base); }
-.jsrp-m-sort-row.is-on .check::after {
-      content: ""; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--content-base);
-    }
-.jsrp-m-filter-sheet {
-      position: fixed;
-      left: 0; right: 0;
-      bottom: 0;
-      z-index: 101;
-      background: var(--surface-raised);
-      border-radius: var(--radius-3xl, 28px) var(--radius-3xl, 28px) 0 0;
-      overflow: hidden;
-      display: flex; flex-direction: column;
-      max-height: 90vh;
-      padding: 0;
-      box-shadow: 0 -16px 48px -8px rgba(13,17,23,0.30);
-      transform: translateY(100%); opacity: 0; pointer-events: none;
-      transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1), opacity 240ms ease;
-    }
-.jsrp-m-filter-sheet.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
-.jsrp-m-filter-h {
-      
-      padding: 16px var(--spacing-layout-sm) 20px;
-      display: flex; align-items: center; gap: 8px;
-      font-family: var(--font-brand); font-weight: 800; font-size: 16px;
-      color: var(--content-base);
-      flex-shrink: 0;
-      position: relative; z-index: 2;
-      box-shadow: 0 6px 12px -8px rgba(13,17,23,0.18);
-    }
-.jsrp-m-filter-h-title { flex: 1; }
-.jsrp-m-filter-h-close {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--color-system-warm-neutral-200, var(--surface-base)); border: none; cursor: pointer;
-      display: grid; place-items: center;
-      -webkit-tap-highlight-color: transparent;
-    }
-.jsrp-m-filter-h-close svg { width: var(--size-icon-xs); height: var(--size-icon-xs); color: var(--content-base); }
-.jsrp-m-filter-body {
-      flex: 1; overflow-y: auto;
-      
-      padding: 14px var(--spacing-layout-sm) 20px;
-      display: flex; flex-direction: column; gap: var(--spacing-inline-md);
-    }
-.jsrp-m-filter-card {
-      background: #FAFAFB;
-      border-radius: var(--radius-xl);
-      padding: 20px 16px;
-      border: none;
-      margin: 0;
-    }
-.jsrp-m-filter-card-h {
-      display: flex; align-items: center; gap: var(--spacing-inline-md);
-      margin-bottom: 14px;
-    }
-.jsrp-m-filter-card-h-title {
-      font-family: var(--font-brand);
-      font-weight: 800; font-size: 12px;
-      color: var(--content-base); flex: 1;
-      display: flex; align-items: center; gap: 8px;
-    }
-.jsrp-m-filter-card-h-count {
-      background: var(--content-base); color: var(--content-on-fill-dark);
-      border-radius: var(--radius-full); padding: 2px 6px;
-      font-size: 10px; font-weight: 800;
-      display: none;
-    }
-.jsrp-m-filter-card.has-selection .jsrp-m-filter-card-h-count { display: inline-block; }
-.jsrp-m-filter-card-clear {
-      background: transparent; border: none; cursor: pointer;
-      font-family: var(--font-brand);
-      font-weight: 700; font-size: 10px;
-      color: var(--content-faded);
-      padding: 4px 6px;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-thickness: 1px;
-      text-decoration-color: rgba(102,112,133,0.4);
-      display: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-.jsrp-m-filter-card-clear:active { color: var(--content-base); }
-.jsrp-m-filter-card.has-selection .jsrp-m-filter-card-clear { display: inline-block; }
-.jsrp-m-filter-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.jsrp-m-filter-pill {
-      height: 32px; padding: 0 12px;
-      border: var(--stroke-default) solid var(--stroke-base);
-      border-radius: var(--radius-full);
-      background: var(--surface-raised);
-      color: var(--content-base);
-      font-family: var(--font-brand);
-      font-size: 12px; font-weight: 700;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: all 140ms;
-      display: inline-flex; align-items: center; gap: var(--spacing-inline-sm);
-    }
-.jsrp-m-filter-pill:active { transform: scale(.97); }
-.jsrp-m-filter-pill.is-on {
-      background: var(--content-base); color: var(--content-on-fill-dark);
-      border-color: var(--content-base);
-    }
-.jsrp-m-filter-pill-count {
-      font-family: var(--font-brand);
-      font-size: 10px; font-weight: 600;
-      opacity: 0.6;
-    }
-.jsrp-m-filter-pill.is-on .jsrp-m-filter-pill-count { opacity: 0.75; }
-.jsrp-m-filter-pill.is-extra { order: -1; }
-.jsrp-m-filter-seeall {
-      margin-top: 14px; padding: 0; height: 28px;
-      background: transparent; border: none;
-      color: var(--content-base);
-      font-family: var(--font-brand);
-      font-weight: 800; font-size: 12px;
-      cursor: pointer;
-      display: inline-flex; align-items: center; gap: 2px;
-      -webkit-tap-highlight-color: transparent;
-    }
-.jsrp-m-filter-seeall::after {
-      content: "›"; font-size: 18px; line-height: .5;
-      margin-top: -4px;
-    }
-.jsrp-m-filter-foot {
-      
-      padding: var(--spacing-inset-xl) var(--spacing-layout-sm) calc(var(--spacing-inset-xl) + env(safe-area-inset-bottom, 0px));
-      display: flex; gap: var(--spacing-inline-md); align-items: center;
-      flex-shrink: 0;
-      position: relative; z-index: 2;
-      box-shadow: 0 -6px 12px -8px rgba(13,17,23,0.18);
-      background: transparent;
-      border-top: none;
-    }
-.jsrp-m-filter-foot-clear {
-      flex: 0 0 auto;
-      height: 46px; padding: 0 22px;
-      background: transparent;
-      border: var(--stroke-default) solid var(--stroke-base);
-      border-radius: var(--radius-lg);
-      font: var(--type-label-md-bold);
-      color: var(--content-muted);
-      cursor: pointer;
-      transition: background 120ms;
-      -webkit-tap-highlight-color: transparent;
-    }
-.jsrp-m-filter-foot-clear:active {
-      background: var(--surface-base);
-    }
-.jsrp-m-filter-foot-apply {
-      flex: 1; height: var(--unit-48);
-      background: var(--content-base);
-      border: none; border-radius: var(--radius-lg);
-      font-family: var(--font-brand);
-      font-weight: 800; font-size: 14px;
-      color: var(--content-on-fill-dark);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: var(--spacing-inline-xs);
-      transition: background 120ms;
-      -webkit-tap-highlight-color: transparent;
-    }
-.jsrp-m-filter-foot-apply:active {
-      background: var(--content-muted);
-    }
-.jsrp-m-filter-foot-apply b { font-weight: 800; }
-.jsrp-m-sub-bd {
-      position: absolute; inset: 0;
-      background: rgba(13,17,23,0.40);
-      z-index: 11;
-      opacity: 0; pointer-events: none;
-      transition: opacity 200ms;
-      border-radius: var(--radius-3xl, 28px) var(--radius-3xl, 28px) 0 0;
-    }
-.jsrp-m-sub-bd.show { opacity: 1; pointer-events: auto; }
-.jsrp-m-sub-sheet {
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      background: var(--surface-raised);
-      border-radius: var(--radius-3xl, 28px) var(--radius-3xl, 28px) 0 0;          
-      z-index: 12;
-      height: 100%;                 
-      display: flex; flex-direction: column;
-      overflow: hidden;
-      transform: translateY(110%);
-      transition: transform 280ms ease;
-    }
-.jsrp-m-sub-sheet.show { transform: translateY(0); }
-.jsrp-m-sub-sheet .jsrp-m-filter-h { gap: var(--spacing-inline-xs); }
-.jsrp-m-sub-clear {
-      background: transparent; border: none;
-      padding: 6px 10px;
-      font: var(--type-eyebrow-sm-bold);
-      letter-spacing: var(--type-eyebrow-sm-track, .05em);
-      text-transform: uppercase;
-      color: var(--content-faded);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: color 120ms;
-    }
-.jsrp-m-sub-clear.is-active { color: var(--content-base); }
-.jsrp-m-sub-search {
-      margin: var(--spacing-stack-md) var(--spacing-inset-lg);
-      position: relative;
-      flex-shrink: 0;
-    }
-.jsrp-m-sub-search input {
-      width: 100%; height: var(--unit-44);
-      border: var(--stroke-thin) solid var(--stroke-base);
-      border-radius: var(--radius-lg);
-      padding: 0 var(--spacing-inset-md) 0 var(--unit-40);
-      font: var(--type-body-md-medium);
-      color: var(--content-base);
-      background: var(--surface-raised);
-      transition: border-color 120ms;
-    }
-.jsrp-m-sub-search input::placeholder { color: var(--content-faded); }
-.jsrp-m-sub-search input:focus { outline: none; border-color: var(--content-base); }
-.jsrp-m-sub-search::before {
-      content: ""; position: absolute;
-      top: 50%; left: var(--spacing-inset-md); transform: translateY(-50%);
-      width: var(--size-icon-md); height: var(--size-icon-md);
-      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><path d='M21 21l-4.35-4.35'/></svg>") no-repeat center / contain;
-      pointer-events: none;
-    }
-.jsrp-m-sub-body {
-      flex: 1; overflow-y: auto;
-      padding: var(--spacing-stack-xs) var(--spacing-inset-sm) var(--spacing-stack-xl);
-    }
-.jsrp-m-sub-section {
-      padding: var(--spacing-stack-lg) var(--spacing-inset-md) var(--spacing-stack-xs);
-      font: var(--type-eyebrow-sm-bold);
-      letter-spacing: var(--type-eyebrow-sm-track, .05em);
-      text-transform: uppercase;
-      color: var(--content-faded);
-    }
-.jsrp-m-sub-section:first-child { padding-top: var(--spacing-stack-lg); }
-.jsrp-m-sub-row {
-      display: flex; align-items: center; gap: var(--spacing-inline-md);
-      padding: var(--spacing-stack-md) var(--spacing-inset-md);
-      border-radius: var(--radius-lg);
-      background: transparent; border: none; cursor: pointer; width: 100%;
-      -webkit-tap-highlight-color: transparent;
-      text-align: left;
-      transition: background 120ms;
-    }
-.jsrp-m-sub-row:active { background: var(--surface-base); }
-.jsrp-m-sub-row .lbl {
-      flex: 1;
-      font-family: var(--font-brand);
-      font-weight: 700;
-      font-size: var(--type-body-md-size);
-      line-height: var(--type-body-md-line);
-      color: var(--content-base);
-    }
-.jsrp-m-sub-row .cnt {
-      font-family: var(--font-brand);
-      font-weight: 600;
-      font-size: var(--type-body-sm-size);
-      line-height: var(--type-body-sm-line);
-      color: var(--content-faded);
-      margin-right: var(--spacing-inline-xs);
-    }
-.jsrp-m-sub-row .ck {
-      width: var(--size-icon-lg); height: var(--size-icon-lg);
-      border-radius: var(--radius-sm);
-      border: var(--stroke-thick) solid var(--stroke-base);
-      flex-shrink: 0;
-      display: grid; place-items: center;
-      transition: border-color 120ms, background 120ms;
-    }
-.jsrp-m-sub-row .ck svg {
-      width: 11px; height: 11px;
-      stroke: var(--surface-raised);
-      stroke-width: 3; fill: none;
-      stroke-linecap: round; stroke-linejoin: round;
-      opacity: 0; transition: opacity 120ms;
-    }
-.jsrp-m-sub-row.is-on .ck {
-      background: var(--content-base); border-color: var(--content-base);
-    }
-.jsrp-m-sub-row.is-on .ck svg { opacity: 1; }
-.jsrp-m-sub-foot {
-      
-      padding: var(--spacing-inset-xl) var(--spacing-layout-sm) calc(var(--spacing-inset-xl) + env(safe-area-inset-bottom, 0px));
-      flex-shrink: 0;
-      box-shadow: 0 -6px 12px -8px rgba(13,17,23,0.18);
-    }
-.jsrp-m-sub-done {
-      width: 100%; height: var(--unit-48);
-      background: var(--content-base);
-      border: none; border-radius: var(--radius-lg);
-      font-family: var(--font-brand);
-      font-weight: 800; font-size: 14px;
-      color: var(--content-on-fill-dark);
-      cursor: pointer;
-      transition: background 120ms;
-      -webkit-tap-highlight-color: transparent;
-    }
-.jsrp-m-sub-done:active {
-      background: var(--content-muted);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .view-jsrp-m .jsrp-m-results { padding-bottom: 24px; }
 .view-jsrp-m .jd-tools-promo {
       position: relative;
@@ -1619,32 +1274,14 @@ body { background: var(--surface-base, var(--surface-base)); }
       border-radius: var(--radius-sm);
     }
 .jsrp-m-nudge-sheet {
-      position: fixed;
-      left: 0; right: 0;
-      bottom: 0;
-      z-index: 91;
-      background: var(--surface-raised);
-      border-radius: var(--radius-3xl, 28px) var(--radius-3xl, 28px) 0 0;
-      box-shadow: 0 -16px 48px -8px rgba(13,17,23,0.30);
-      transform: translateY(100%);
-      transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
-      max-height: 90vh;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      display: flex; flex-direction: column;
-      
+      /* container = shared bottom sheet (.bs); this rule only pads the share / save content */
+      overflow-y: auto; overscroll-behavior: contain;
       padding: 0 var(--spacing-layout-sm);
       padding-bottom: calc(var(--spacing-layout-sm) + env(safe-area-inset-bottom, 0px));
     }
-.jsrp-m-nudge-sheet.show { transform: translateY(0); }
-    .jsrp-m-nudge-sheet[hidden] { display: none; }
-.jsrp-m-nudge-handle {
-      width: 40px; height: 4px;
-      background: var(--stroke-base);
-      border-radius: var(--radius-full);
-      margin: 10px auto 0;
-      flex-shrink: 0;
-    }
+
+    
+
 .jsrp-m-nudge-sheet .nudge-body {
       padding: 16px 0 32px;
     }
@@ -1657,32 +1294,16 @@ body { background: var(--surface-base, var(--surface-base)); }
       line-height: 1.14;
       letter-spacing: -0.022em;
     }
-.jsrp-m-fb-bd {
-      position: fixed; inset: 0;
-      background: rgba(13,17,23,0.30);
-      opacity: 0; pointer-events: none;
-      transition: opacity 240ms ease;
-      z-index: 100;
-    }
-.jsrp-m-fb-bd.show { opacity: 1; pointer-events: auto; }
-.jsrp-m-fb {
-      position: fixed;
-      left: 0; right: 0;
-      bottom: 0;
-      z-index: 101;
-      background: var(--surface-inverse-base, var(--surface-inverse-base));
-      color: var(--content-on-fill-dark, var(--surface-raised));
-      border-top: var(--stroke-thin) solid rgba(255,255,255,0.10);
-      border-radius: var(--radius-3xl, 28px) var(--radius-3xl, 28px) 0 0;
+
+
+.bs.jsrp-m-fb {
+      /* container = shared bottom sheet, inverse variant; this rule pads the quick-check content */
       padding: var(--spacing-layout-sm);
       padding-bottom: calc(var(--spacing-layout-sm) + env(safe-area-inset-bottom, 0px));
-      box-shadow: 0 -16px 48px -8px rgba(0,0,0,0.50);
-      transform: translateY(100%); opacity: 0; pointer-events: none;
-      transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1), opacity 240ms ease,
-                  background 220ms ease, border-color 220ms ease;
-      overflow: hidden;
+      transition: transform var(--bs-dur-out) var(--bs-ease), background 220ms ease, border-color 220ms ease;
     }
-.jsrp-m-fb.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    .bs.jsrp-m-fb.is-open { transition-duration: var(--bs-dur-in), 220ms, 220ms; }
+
 .jsrp-m-fb::before {
       content: ""; position: absolute;
       top: -40px; right: -40px;
@@ -1764,15 +1385,8 @@ body { background: var(--surface-base, var(--surface-base)); }
       margin: 0;
       font-weight: 700;
     }
-.view-jsrp-m.fb-open .jsrp-m-floater,
-    .view-jsrp-m.fb-open .jsrp-m-fade-mask {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(-50%) translateY(140%);
-    }
-.view-jsrp-m.fb-open .jsrp-m-fade-mask {
-      transform: none;             
-    }
+
+
 .jsrp-m-jc--shimmer {
       background: var(--surface-raised);
       border: var(--stroke-thin) solid var(--stroke-muted);
@@ -1828,8 +1442,21 @@ body { background: var(--surface-base, var(--surface-base)); }
     html, body { background: var(--surface-base); }
     .view-jsrp-m { max-width:480px; margin:0 auto; }
   }
+
+    /* empty result state — rendered by the results query when filters match nothing */
+    .jsrp-m-jc.jsrp-m-empty { text-align: center; padding: var(--spacing-section-md, 32px) var(--spacing-layout-sm); }
+    .jsrp-m-empty-h { margin: 0 0 6px; font: 800 18px/24px var(--font-brand); color: var(--content-base); }
+    .jsrp-m-empty-p { margin: 0 0 20px; font: 500 14px/20px var(--font-brand); color: var(--content-faded); }
+    .jsrp-m-empty-btn {
+      height: var(--unit-48); padding: 0 24px; border: none; border-radius: var(--radius-lg);
+      background: var(--content-base); color: var(--content-on-fill-dark);
+      font: 800 14px/1 var(--font-brand); cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .jsrp-m-empty-btn:active { background: var(--content-muted); }
 </style>
 <link rel="stylesheet" href="components/search-modal/search-modal.css">
+<link rel="stylesheet" href="components/bottom-sheet/bottom-sheet.css">
+<link rel="stylesheet" href="components/sort-filter/sort-filter.css">
 </head>
 <body>
 <div class="view-jsrp-m" id="viewJsrpM">
@@ -1875,29 +1502,9 @@ body { background: var(--surface-base, var(--surface-base)); }
       <div id="jsrpMList"><!-- cards rendered by JS --></div>
     </div>
 
-    <!-- Floating bottom capsule — Sort + Filter actions, sticky at the
-         bottom of the JSRP screen. Cards scroll behind it; only the
-         capsule itself carries a shadow (no bottom fade). (Markup ported from index.html mobile reference; class
-         prefix renamed .jsrp- → .jsrp-m- for mobile scoping.) -->
-    <div class="jsrp-m-floater">
-      <button class="jsrp-m-floater-action btn btn--md btn--shape-full btn--ghost" id="jsrpMSortBtn" aria-label="Sort">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
-        <span>Sort</span>
-      </button>
-      <span class="jsrp-m-floater-divider"></span>
-      <button class="jsrp-m-floater-action has-badge btn btn--md btn--shape-full btn--ghost" id="jsrpMFilterBtn" aria-label="Filter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        <span>Filter</span>
-        <span class="badge" id="jsrpMFilterBadge">0</span>
-      </button>
-    </div>
-
-    <!-- Feedback bottom sheet — B3 design (dark sheet + reaction strip).
-         Reveals after the 6th job card scrolls into view. Mirrors the
-         sort/filter sheet pattern: backdrop + slide-up sheet, dismiss
-         via backdrop tap, close button, or reaction tap. -->
-    <div class="jsrp-m-fb-bd" id="jsrpMFbBd"></div>
-    <div class="jsrp-m-fb" id="jsrpMFb" role="dialog" aria-label="Job relevance feedback">
+    <!-- Feedback — shared bottom sheet (.bs, inverse). Reveals after the 6th
+         job card scrolls into view; X / backdrop / Escape / a vote dismiss it. -->
+    <div class="bs bs--inverse jsrp-m-fb" id="jsrpMFb" role="dialog" aria-label="Job relevance feedback" data-bs-drag="false" hidden>
       <div class="jsrp-m-fb-handle"></div>
       <button class="jsrp-m-fb-close" id="jsrpMFbClose" aria-label="Dismiss">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
@@ -1911,68 +1518,7 @@ body { background: var(--surface-base, var(--surface-base)); }
       </div>
     </div>
 
-    <!-- Sort bottom sheet -->
-    <div class="jsrp-m-sort-bd" id="jsrpMSortBd"></div>
-    <div class="jsrp-m-sort-sheet" id="jsrpMSortSheet" role="dialog" aria-label="Sort by">
-      <!-- Drag handle — matches Share + Bookmark sheets for header consistency -->
-      <div class="jsrp-m-nudge-handle"></div>
-      <div class="jsrp-m-sort-sheet-h">
-        <span>Sort by</span>
-        <button class="jsrp-m-sort-close" id="jsrpMSortClose" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </button>
-      </div>
-      <button class="jsrp-m-sort-row" data-sort="recent" type="button"><span class="lbl">Most Recent</span><span class="check"></span></button>
-      <button class="jsrp-m-sort-row is-on" data-sort="relevance" type="button"><span class="lbl">Relevance · Best match</span><span class="check"></span></button>
-      <button class="jsrp-m-sort-row" data-sort="activelyHiring" type="button"><span class="lbl">Actively Hiring</span><span class="check"></span></button>
-      <button class="jsrp-m-sort-row" data-sort="topCompanies" type="button"><span class="lbl">Top Companies</span><span class="check"></span></button>
-      <button class="jsrp-m-sort-row" data-sort="expLow" type="button"><span class="lbl">Experience · Low to High</span><span class="check"></span></button>
-      <button class="jsrp-m-sort-row" data-sort="expHigh" type="button"><span class="lbl">Experience · High to Low</span><span class="check"></span></button>
-    </div>
-
-    <!-- Filter modal — floating card. The See-all sub-sheet is nested
-         INSIDE this card so it overlays just the modal bounds (matching
-         the 14px gutter + 24px radius), exactly as index.html does. -->
-    <div class="jsrp-m-filter-bd" id="jsrpMFilterBd"></div>
-    <div class="jsrp-m-filter-sheet" id="jsrpMFilterSheet" role="dialog" aria-label="Filter jobs">
-      <!-- Drag handle — matches Share + Bookmark sheets for header consistency -->
-      <div class="jsrp-m-nudge-handle"></div>
-      <div class="jsrp-m-filter-h">
-        <span class="jsrp-m-filter-h-title">Filter jobs</span>
-        <button class="jsrp-m-filter-h-close" id="jsrpMFilterClose" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="jsrp-m-filter-body" id="jsrpMFilterBody"></div>
-      <div class="jsrp-m-filter-foot">
-        <button class="jsrp-m-filter-foot-clear" id="jsrpMFilterFootClear" type="button">Clear</button>
-        <button class="jsrp-m-filter-foot-apply" id="jsrpMFilterApply" type="button">
-          Show <b id="jsrpMFilterCount">28,969</b> jobs
-        </button>
-      </div>
-
-      <!-- See-all sub-sheet — overlays the filter sheet (nested inside).
-           Header reuses .jsrp-m-filter-h class for visual continuity
-           with the parent modal: title + uppercase Clear link + circular
-           close button. Close button = back action (returns to filter). -->
-      <div class="jsrp-m-sub-bd" id="jsrpMSubBd"></div>
-      <div class="jsrp-m-sub-sheet" id="jsrpMSubSheet" role="dialog" aria-label="Sub-filter">
-        <div class="jsrp-m-filter-h">
-          <span class="jsrp-m-filter-h-title" id="jsrpMSubTitle">Location</span>
-          <button class="jsrp-m-sub-clear" id="jsrpMSubClear" type="button">CLEAR</button>
-          <button class="jsrp-m-filter-h-close" id="jsrpMSubBack" aria-label="Close">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-          </button>
-        </div>
-        <div class="jsrp-m-sub-search field field--md field--search" id="jsrpMSubSearchWrap" style="display:none;">
-          <input type="text" id="jsrpMSubSearch" placeholder="Search…" />
-        </div>
-        <div class="jsrp-m-sub-body" id="jsrpMSubBody"></div>
-        <div class="jsrp-m-sub-foot">
-          <button class="jsrp-m-sub-done" id="jsrpMSubDone" type="button">Done</button>
-        </div>
-      </div>
-    </div>
+    <!-- Sort · Filter bar + sheets are rendered by the shared sort-filter component (see script). -->
 
   </div>
 
@@ -1980,14 +1526,24 @@ body { background: var(--surface-base, var(--surface-base)); }
 (function(){
   var HOME = "index.html";
   var DEFAULT = { q: 'Product Manager', loc: 'India', exp: '' };
+  var DEFAULT_SORT = 'relevance';
+  // URL ⇄ state. Search = q / loc / exp. Sort = sort (omitted when Relevance).
+  // Filters = one param per group, "f.<group>=id,id" — shareable, survives reload.
   function fromUrl(){
     var p = new URLSearchParams(location.search), has = p.has('q') || p.has('loc') || p.has('exp');
-    return has ? { q: (p.get('q') || '').trim(), loc: (p.get('loc') || '').trim(), exp: (p.get('exp') || '').trim() } : DEFAULT;
+    var s = has ? { q: (p.get('q') || '').trim(), loc: (p.get('loc') || '').trim(), exp: (p.get('exp') || '').trim() }
+                : { q: DEFAULT.q, loc: DEFAULT.loc, exp: DEFAULT.exp };
+    s.sort = p.get('sort') || DEFAULT_SORT;
+    s.f = {};
+    p.forEach(function(v, k){ if (k.indexOf('f.') === 0 && v) s.f[k.slice(2)] = v.split(',').filter(Boolean); });
+    return s;
   }
   function toUrl(s){
     var p = new URLSearchParams();
     if (s.q) p.set('q', s.q); if (s.loc) p.set('loc', s.loc); if (s.exp) p.set('exp', s.exp);
-    var qs = p.toString(); return location.pathname + (qs ? '?' + qs : '');
+    if (s.sort && s.sort !== DEFAULT_SORT) p.set('sort', s.sort);
+    Object.keys(s.f || {}).forEach(function(k){ if (s.f[k] && s.f[k].length) p.set('f.' + k, s.f[k].join(',')); });
+    var qs = p.toString().replace(/%2C/g, ','); return location.pathname + (qs ? '?' + qs : '');
   }
   // placeholder result count — stable per search so it doesn't jump on reload
   function countFor(s){
@@ -2000,7 +1556,7 @@ body { background: var(--surface-base, var(--surface-base)); }
     var c = document.getElementById('jsrpMStickyCountNum'), pill = document.getElementById('jsrpMStickyCount');
     if (q) q.textContent = s.q || 'All';
     if (l) l.textContent = s.loc || 'India';
-    if (c) c.textContent = countFor(s).toLocaleString('en-IN');
+    if (c) c.textContent = (window.__jsrpCount ? window.__jsrpCount(s) : countFor(s)).toLocaleString('en-IN');
     if (pill) {
       var x = pill.querySelector('.jsrp-m-hero-exp');
       if (s.exp) { if (!x) { x = document.createElement('span'); x.className = 'jsrp-m-hero-exp'; pill.appendChild(x); } x.textContent = s.exp; }
@@ -2009,23 +1565,32 @@ body { background: var(--surface-base, var(--surface-base)); }
     document.title = (s.q || 'All') + ' jobs in ' + (s.loc || 'India') + ' — Shine';
   }
   window.__jsrpState = fromUrl();
+  window.__jsrpUrl = toUrl;
+  window.__jsrpPaint = paint;
+  window.__jsrpBaseCount = countFor;
   paint(window.__jsrpState);
 
   document.addEventListener('DOMContentLoaded', function(){
     // Edit search submit on this page → update in place (no reload), keep history.
+    // A new search starts clean: Relevance + no filters (sort-filter component reset silently).
     document.addEventListener('shine:search', function(e){
       if (e.detail.source !== 'jsrp') return;          // any other trigger keeps the component default
       e.preventDefault();
-      var s = { q: e.detail.query, loc: e.detail.location, exp: e.detail.experience };
-      var same = s.q === window.__jsrpState.q && s.loc === window.__jsrpState.loc && s.exp === window.__jsrpState.exp;
+      var cur = window.__jsrpState;
+      var s = { q: e.detail.query, loc: e.detail.location, exp: e.detail.experience, sort: DEFAULT_SORT, f: {} };
+      var same = s.q === cur.q && s.loc === cur.loc && s.exp === cur.exp;
+      if (same) { s.sort = cur.sort; s.f = cur.f; }
+      else if (window.__jsrpSF) window.__jsrpSF.reset({ silent: true });
       window.__jsrpState = s; paint(s);
       if (!same) history.pushState(s, '', toUrl(s));
       if (window.__jsrpReload) window.__jsrpReload(s);
       if (typeof showToast === 'function') showToast(same ? 'Showing the same search' : 'Search updated');
     });
     window.addEventListener('popstate', function(){
-      window.__jsrpState = fromUrl(); paint(window.__jsrpState);
-      if (window.__jsrpReload) window.__jsrpReload(window.__jsrpState);
+      var s = window.__jsrpState = fromUrl();
+      if (window.__jsrpSF) window.__jsrpSF.setState({ sort: s.sort, filters: s.f }, { silent: true });
+      paint(s);
+      if (window.__jsrpReload) window.__jsrpReload(s);
     });
     // Back: previous app screen when there is one, otherwise the logged-out home.
     var back = document.getElementById('jsrpMNavBack');
@@ -2037,11 +1602,10 @@ body { background: var(--surface-base, var(--surface-base)); }
 })();
 </script>
 
-  <div class="nudge-bd" id="nudgeBd"></div>
 
-  <div class="jsrp-m-nudge-sheet nudge-modal--share" id="nudgeShareSheet" role="dialog" aria-modal="true" aria-labelledby="nudgeShareSheetH" hidden>
-    <div class="jsrp-m-nudge-handle"></div>
-    <button class="nudge-close" data-nudge-close aria-label="Close">
+  <div class="bs jsrp-m-nudge-sheet nudge-modal--share" data-bs-scrim="strong" id="nudgeShareSheet" role="dialog" aria-modal="true" aria-labelledby="nudgeShareSheetH" hidden>
+    <div class="bs-handle" aria-hidden="true"></div>
+    <button class="nudge-close" data-bs-close aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="nudge-body">
@@ -2079,9 +1643,9 @@ body { background: var(--surface-base, var(--surface-base)); }
     </div>
   </div>
 
-  <div class="jsrp-m-nudge-sheet nudge-modal--save" id="nudgeSaveSheet" role="dialog" aria-modal="true" aria-labelledby="nudgeSaveSheetH" hidden>
-    <div class="jsrp-m-nudge-handle"></div>
-    <button class="nudge-close" data-nudge-close aria-label="Close">
+  <div class="bs jsrp-m-nudge-sheet nudge-modal--save" data-bs-scrim="strong" id="nudgeSaveSheet" role="dialog" aria-modal="true" aria-labelledby="nudgeSaveSheetH" hidden>
+    <div class="bs-handle" aria-hidden="true"></div>
+    <button class="nudge-close" data-bs-close aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div class="nudge-body">
@@ -2102,6 +1666,8 @@ body { background: var(--surface-base, var(--surface-base)); }
     <span id="toastMsg">Done</span>
   </div>
 
+<script src="components/bottom-sheet/bottom-sheet.js"></script>
+<script src="components/sort-filter/sort-filter.js"></script>
 <script>
     // === Toast ===
     function showToast(msg) {
@@ -2114,14 +1680,13 @@ body { background: var(--surface-base, var(--surface-base)); }
     }
 
     (function setupAuthNudge(){
-      var bd          = document.getElementById('nudgeBd');
       var share       = document.getElementById('nudgeShare');
       var shareSh     = document.getElementById('nudgeShareSheet');
       // Save (bookmark) nudge — desktop dialog + mobile sheet.
       // Shown ONLY when a logged-out user taps the bookmark on a job card.
       var saveModal   = document.getElementById('nudgeSave');
       var saveSheet   = document.getElementById('nudgeSaveSheet');
-      if (!bd) return;
+      if (!window.ShineSheet) return;
 
       // Tracks the currently-open modal element so close() knows what
       // to dismiss. Could be either the desktop dialog or mobile sheet.
@@ -2137,48 +1702,21 @@ body { background: var(--surface-base, var(--surface-base)); }
         if (kind === 'save')  return saveSheet;
         return null;
       }
-      function openNudge(kind) {
+      function openNudge(kind, trigger) {
         var el = pickModal(kind);
         if (!el) return;
-        // Make sure the [hidden] attribute is removed before showing —
-        // browsers won't transition opacity on hidden elements.
-        el.hidden = false;
-        // Force a reflow so the transition fires on .show
-        // (CSS transition needs the starting opacity to be applied first).
-        // eslint-disable-next-line no-unused-expressions
-        el.offsetHeight;
-        bd.classList.add('show');
-        el.classList.add('show');
         currentOpen = el;
-        // Lock body scroll so the page doesn't drift under the modal
-        document.body.style.overflow = 'hidden';
+        // scrim, scroll lock, focus, Escape, drag-to-dismiss → shared bottom-sheet component
+        window.ShineSheet.open(el, { trigger: trigger });
       }
       function closeNudge() {
         if (!currentOpen) return;
-        bd.classList.remove('show');
-        currentOpen.classList.remove('show');
-        var el = currentOpen;
-        currentOpen = null;
-        document.body.style.overflow = '';
-        // After the transition, restore [hidden] for a11y / focus order.
-        setTimeout(function(){
-          if (!el.classList.contains('show')) el.hidden = true;
-        }, 340);
+        var el = currentOpen; currentOpen = null;
+        window.ShineSheet.close(el, 'api');
       }
-
-      // Backdrop click dismisses
-      bd.addEventListener('click', closeNudge);
-      // Close button on any modal
-      document.querySelectorAll('[data-nudge-close]').forEach(function(b){
-        b.addEventListener('click', closeNudge);
+      [shareSh, saveSheet].forEach(function(sh){
+        sh && sh.addEventListener('shine:sheet-close', function(e){ if (e.target === sh && currentOpen === sh) currentOpen = null; });
       });
-      // Escape key dismisses
-      document.addEventListener('keydown', function(e){
-        if (e.key === 'Escape' && currentOpen) closeNudge();
-      });
-      // Mobile sheet — tapping outside the sheet (on the bd) already
-      // dismisses, but also swipe-down would be nice. Keep simple for
-      // now: drag handle is purely visual.
 
       // ── Share sheet handlers ──────────────────────────────────────
       // Replaces the old "refer & earn" 3-state flow. Each channel
@@ -2268,13 +1806,13 @@ body { background: var(--surface-base, var(--surface-base)); }
         var shareBtn = t.closest('[data-act="share"]');
         if (shareBtn) {
           e.stopImmediatePropagation();
-          openNudge('share');
+          openNudge('share', shareBtn);
           return;
         }
         var saveBtn = t.closest('[data-act="save"]');
         if (saveBtn && !document.body.classList.contains('is-logged-in')) {
           e.stopImmediatePropagation();
-          openNudge('save');
+          openNudge('save', saveBtn);
         }
       }
       // Bind in CAPTURE phase so we run before the existing delegated
@@ -2342,25 +1880,6 @@ body { background: var(--surface-base, var(--surface-base)); }
         navIo.observe(heroSentinel);
       }
 
-      // Floater visibility — hide the Sort+Filter capsule (and its fade
-      // mask) once the user scrolls into the footer, so it doesn't visually
-      // compete with footer content. When they scroll back up to the job
-      // results, it reappears smoothly. Observes the mobile footer with
-      // a small bottom margin so the swap fires when the footer's top
-      // edge crosses ~100px above the viewport bottom — feels natural,
-      // matches where the floater normally sits.
-      var floater = view.querySelector('.jsrp-m-floater');
-      var fadeMask = view.querySelector('.jsrp-m-fade-mask');
-      var footerEl = view.querySelector('.site-footer');
-      if (floater && footerEl && 'IntersectionObserver' in window) {
-        var footIo = new IntersectionObserver(function(entries){
-          entries.forEach(function(e){
-            floater.classList.toggle('is-hidden', e.isIntersecting);
-            if (fadeMask) fadeMask.classList.toggle('is-hidden', e.isIntersecting);
-          });
-        }, { root: null, threshold: 0, rootMargin: '0px 0px -100px 0px' });
-        footIo.observe(footerEl);
-      }
 
       // Job data — synced 1:1 with the desktop JOBS array (line ~10857).
       // Same 12 entries, same companies, same titles, salaries, chips,
@@ -2439,7 +1958,146 @@ body { background: var(--surface-base, var(--surface-base)); }
         MOBILE_JOBS.length = 0;
         ranked.forEach(function(r){ MOBILE_JOBS.push(r.j); });
       }
-      orderJobs(window.__jsrpState || {});
+      // ── Results query: search → filters → sort ───────────────────────
+      // The page owns the data; the shared sort-filter component only reports
+      // what the user picked (shine:sort / shine:filter). Every change re-runs
+      // this pipeline over the full result set — never just the cards already
+      // on screen — exactly what a real search API call would do.
+      var FILTER_GROUPS = [
+        { key:'location', name:'Location', searchable:true,
+          popular:['bangalore','hyderabad','pune','mumbai'],
+          options:[
+            {id:'all-india',label:'All India',count:28969},
+            {id:'bangalore',label:'Bangalore',count:8421},
+            {id:'hyderabad',label:'Hyderabad',count:5234},
+            {id:'pune',label:'Pune',count:4180},
+            {id:'mumbai',label:'Mumbai',count:3672},
+            {id:'chennai',label:'Chennai',count:3121},
+            {id:'delhi-ncr',label:'Delhi NCR',count:2987},
+            {id:'gurgaon',label:'Gurgaon',count:2410},
+            {id:'noida',label:'Noida',count:1908},
+            {id:'kolkata',label:'Kolkata',count:1240},
+            {id:'ahmedabad',label:'Ahmedabad',count:980},
+            {id:'jaipur',label:'Jaipur',count:740}
+          ] },
+        { key:'experience', name:'Experience', popular:['1-3','3-6','6-8'],
+          options:[
+            {id:'0-1',label:'0 to 1 Years',count:4120},
+            {id:'1-3',label:'1 to 3 Years',count:12480},
+            {id:'3-6',label:'3 to 6 Years',count:18230},
+            {id:'6-8',label:'6 to 8 Years',count:23350},
+            {id:'8-10',label:'8 to 10 Years',count:15740},
+            {id:'10-15',label:'10 to 15 Years',count:9820},
+            {id:'15+',label:'15+ Years',count:4150}
+          ] },
+        { key:'salary', name:'Salary', popular:['5-10','10-15','15-25'],
+          options:[
+            {id:'0-3',label:'0 To 3 Lakh',count:1820},
+            {id:'3-5',label:'3 To 5 Lakh',count:2080},
+            {id:'5-10',label:'5 To 10 Lakh',count:7421},
+            {id:'10-15',label:'10 To 15 Lakh',count:6240},
+            {id:'15-25',label:'15 To 25 Lakh',count:4980},
+            {id:'25-50',label:'25 To 50 Lakh',count:2110},
+            {id:'50+',label:'50 Lakh+',count:580}
+          ] },
+        { key:'jobtype', name:'Job Type', popular:['permanent','contractual','freelance','internship'],
+          options:[
+            {id:'permanent',label:'Permanent',count:24820},
+            {id:'contractual',label:'Contractual',count:3210},
+            {id:'freelance',label:'Freelance',count:590},
+            {id:'internship',label:'Internship',count:349}
+          ] },
+        { key:'jobmode', name:'Job Mode', popular:['onsite','remote','hybrid'],
+          options:[
+            {id:'onsite',label:'On Site',count:18500},
+            {id:'remote',label:'Remote',count:4890},
+            {id:'hybrid',label:'Hybrid',count:5579}
+          ] }
+      ];
+      var SORT_OPTIONS = [
+        { value:'recent',         label:'Most Recent' },
+        { value:'relevance',      label:'Relevance · Best match' },
+        { value:'activelyHiring', label:'Actively Hiring' },
+        { value:'topCompanies',   label:'Top Companies' },
+        { value:'expLow',         label:'Experience · Low to High' },
+        { value:'expHigh',        label:'Experience · High to Low' }
+      ];
+
+      // Sample data has no job type / mode — give each job a fixed mock value
+      // so those filters do something visible in the prototype.
+      var MOCK_MODES = ['onsite','hybrid','onsite','remote','hybrid','onsite','onsite'];
+      BASE_JOBS.forEach(function(j, i){
+        if (!j.jobmode) j.jobmode = MOCK_MODES[i % MOCK_MODES.length];
+        if (!j.jobtype) j.jobtype = (i % 9 === 4) ? 'contractual' : (i % 17 === 11) ? 'freelance' : 'permanent';
+      });
+      var TOP_CO = ['microsoft','flipkart','zomato','swiggy','phonepe'];
+      var LOC_MATCH = { 'all-india':['all india'], 'bangalore':['bengaluru','bangalore'], 'delhi-ncr':['delhi','gurgaon','noida'] };
+      function span(s){ var m = String(s).match(/(\d+)\D+(\d+)/); return m ? [+m[1], +m[2]] : [parseFloat(s) || 0, 999]; }
+      function optSpan(id){ return /\+$/.test(id) ? [parseFloat(id), 999] : id.split('-').map(Number); }
+      function overlap(a, b){ return a[0] <= b[1] && b[0] <= a[1]; }
+      var MATCH = {
+        location:   function(j, id){ return (LOC_MATCH[id] || [id]).some(function(c){ return j.loc.toLowerCase().indexOf(c) > -1; }); },
+        experience: function(j, id){ return overlap(span(j.exp), optSpan(id)); },
+        salary:     function(j, id){ return overlap(span(j.sal), optSpan(id)); },
+        jobtype:    function(j, id){ return j.jobtype === id; },
+        jobmode:    function(j, id){ return j.jobmode === id; }
+      };
+      function ageDays(t){ var m = String(t).match(/(\d+)\s*(day|week|month)/); return m ? +m[1] * ({ day:1, week:7, month:30 })[m[2]] : 0; }
+      function isActive(j){ return (j.chips || []).some(function(c){ return c.cls === 'actively'; }) ? 1 : 0; }
+      function isTop(j){ var c = j.co.toLowerCase(); return TOP_CO.some(function(t){ return c.indexOf(t) > -1; }) ? 1 : 0; }
+      var SORT_CMP = {
+        recent:         function(a, b){ return ageDays(a.time) - ageDays(b.time); },
+        activelyHiring: function(a, b){ return isActive(b) - isActive(a); },
+        topCompanies:   function(a, b){ return isTop(b) - isTop(a); },
+        expLow:         function(a, b){ return span(a.exp)[0] - span(b.exp)[0]; },
+        expHigh:        function(a, b){ return span(b.exp)[1] - span(a.exp)[1]; }
+      };
+      // PROTOTYPE NOTE — the sample holds ~46 jobs, so hard filtering would
+      // empty the list for most combinations while the counts promise
+      // thousands. Matching jobs are therefore ranked first (most filter
+      // groups matched → then the chosen sort → then search relevance) and
+      // the rest follow. The real API returns matches only; the empty state
+      // and the "No matching jobs" CTA below are already wired for that.
+      // a group counts as matched when the job fits ANY picked option (OR inside, AND across)
+      function filterScore(j, f){
+        return Object.keys(f || {}).reduce(function(n, k){
+          var ids = f[k] || []; return n + (ids.length && MATCH[k] && ids.some(function(id){ return MATCH[k](j, id); }) ? 1 : 0);
+        }, 0);
+      }
+      function runQuery(s){
+        orderJobs(s);                                         // search relevance
+        var cmp = SORT_CMP[s.sort];
+        var list = MOBILE_JOBS.map(function(j, i){ return { j:j, i:i, m:filterScore(j, s.f) }; });
+        list.sort(function(a, b){ return (b.m - a.m) || (cmp ? cmp(a.j, b.j) : 0) || (a.i - b.i); });   // stable
+        MOBILE_JOBS.length = 0;
+        list.forEach(function(r){ MOBILE_JOBS.push(r.j); });
+      }
+      // Result count — hero + "Show N jobs". Placeholder model: search count ×
+      // the share of jobs the picked facets cover (intersection shrinks 0.78× per group).
+      var FACET_BASE = 28969;
+      function facetShare(f){
+        var sets = [];
+        FILTER_GROUPS.forEach(function(g){
+          var ids = (f && f[g.key]) || []; if (!ids.length) return;
+          var sum = 0; g.options.forEach(function(o){ if (ids.indexOf(o.id) > -1) sum += o.count; });
+          sets.push(Math.min(sum, FACET_BASE));
+        });
+        if (!sets.length) return 1;
+        return Math.min.apply(null, sets) * Math.pow(0.78, sets.length - 1) / FACET_BASE;
+      }
+      window.__jsrpCount = function(s){
+        var base = window.__jsrpBaseCount ? window.__jsrpBaseCount(s) : FACET_BASE;
+        if (!Object.keys(s.f || {}).length) return base;
+        return Math.round(base * facetShare(s.f));             // 0 → CTA disables, list shows the empty state
+      };
+      function emptyStateHTML(){
+        return '<article class="jsrp-m-jc jsrp-m-empty" role="status">' +
+          '<h3 class="jsrp-m-empty-h">No jobs match these filters</h3>' +
+          '<p class="jsrp-m-empty-p">Try removing a filter or two to see more roles.</p>' +
+          '<button class="jsrp-m-empty-btn" type="button" data-act="clear-filters">Clear filters</button>' +
+        '</article>';
+      }
+      runQuery(window.__jsrpState || {});
 
       // Card template ported verbatim from index.html mobile reference
        // (function jobCardHTML at line ~8378). Structure:
@@ -2771,6 +2429,7 @@ body { background: var(--surface-base, var(--surface-base)); }
       var mLoading        = false;
       var mSentinel       = null;
       var mObserver       = null;
+      var mGen            = 0;     // bumps on every re-query; stale batch timers bail out
 
       // Simulated network delay for each batch (2–3 seconds).
       function mFakeApiDelay(){ return 2000 + Math.floor(Math.random() * 1000); }
@@ -2847,7 +2506,9 @@ body { background: var(--surface-base, var(--surface-base)); }
         mLoading = true;
         var remaining = MOBILE_JOBS.length - mLoadedCount;
         appendShimmers(Math.min(4, remaining));
+        var gen = mGen;
         setTimeout(function(){
+          if (gen !== mGen) return;
           removeShimmers();
           appendRealBatch();
           mLoading = false;
@@ -2893,7 +2554,11 @@ body { background: var(--surface-base, var(--surface-base)); }
       }
 
       // Kick things off.
-      setupInfiniteScroll();
+      function renderResults(){
+        setupInfiniteScroll();
+        if (!MOBILE_JOBS.length && listEl) listEl.insertAdjacentHTML('afterbegin', emptyStateHTML());
+      }
+      renderResults();
 
       // Keep the identifier that sort/observer callbacks referenced
       // so nothing else breaks — value is unused now that pagination
@@ -2929,417 +2594,47 @@ body { background: var(--surface-base, var(--surface-base)); }
         });
       }
 
-      // ── Sort bottom sheet ────────────────────────────────────────────
-      var sortBtn   = document.getElementById('jsrpMSortBtn');
-      var sortSheet = document.getElementById('jsrpMSortSheet');
-      var sortBd    = document.getElementById('jsrpMSortBd');
-      var sortClose = document.getElementById('jsrpMSortClose');
-      function openSort(){
-        if (!sortSheet) return;
-        sortSheet.classList.add('show');
-        sortBd && sortBd.classList.add('show');
-      }
-      function closeSort(){
-        if (!sortSheet) return;
-        sortSheet.classList.remove('show');
-        sortBd && sortBd.classList.remove('show');
-      }
-      sortBtn && sortBtn.addEventListener('click', openSort);
-      sortClose && sortClose.addEventListener('click', closeSort);
-      sortBd && sortBd.addEventListener('click', closeSort);
-      // Mobile sort — actually reorders / filters cards. Mirrors the
-      // desktop logic (filter-style for activelyHiring + topCompanies,
-      // simple sort for the rest). Re-pins the mobile tools promo to
-      // sit after the 8th visible card.
-      sortSheet && sortSheet.querySelectorAll('.jsrp-m-sort-row').forEach(function(row){
-        row.addEventListener('click', function(){
-          sortSheet.querySelectorAll('.jsrp-m-sort-row').forEach(function(r){ r.classList.remove('is-on'); });
-          row.classList.add('is-on');
-          var sort = row.getAttribute('data-sort');
-
-          if (listEl) {
-            var cards = Array.prototype.slice.call(listEl.querySelectorAll('.jsrp-m-jc'));
-            // Reset visibility from any previous filter-style sort
-            cards.forEach(function(c){ c.style.display = ''; });
-            // Apply filter (activelyHiring / topCompanies)
-            if (sort === 'activelyHiring') {
-              cards.forEach(function(c){
-                if (c.dataset.active !== '1') c.style.display = 'none';
-              });
-            } else if (sort === 'topCompanies') {
-              cards.forEach(function(c){
-                if (c.dataset.top !== '1') c.style.display = 'none';
-              });
-            }
-            // Apply ordering
-            cards.sort(function(a, b){
-              if (sort === 'recent')   return parseInt(b.dataset.idx) - parseInt(a.dataset.idx);
-              if (sort === 'expLow')   return parseFloat(a.dataset.exp) - parseFloat(b.dataset.exp);
-              if (sort === 'expHigh')  return parseFloat(b.dataset.exp) - parseFloat(a.dataset.exp);
-              return parseInt(a.dataset.idx) - parseInt(b.dataset.idx);
-            });
-            cards.forEach(function(c){ listEl.appendChild(c); });
-            // Re-pin mobile tools promo after the 8th visible card
-            var toolsPromo = listEl.querySelector('[data-tools-promo]');
-            if (toolsPromo) {
-              var visible = cards.filter(function(c){ return c.style.display !== 'none'; });
-              if (visible.length > 8) {
-                listEl.insertBefore(toolsPromo, visible[8]);
-              } else {
-                listEl.appendChild(toolsPromo);
-              }
-            }
-            // Keep pagination + infinite-scroll sentinel pinned to the
-            // bottom (the appendChild loop above moved cards past them).
-            var pagM = listEl.querySelector('.jsrp-m-jsrp-pag-outer');
-            if (pagM) listEl.appendChild(pagM);
-            var sentM = listEl.querySelector('.jsrp-m-scroll-sentinel');
-            if (sentM) listEl.appendChild(sentM);
-          }
-          setTimeout(closeSort, 200);
-        });
+      // ── Sort & Filter → shared app component (app-components/sort-filter) ──
+      // The component renders the floating bar + sheets and owns the
+      // interaction (draft → Apply, See all, a11y). This page only maps its
+      // events onto the results query and the URL.
+      var sf = window.__jsrpSF = ShineSortFilter.create({
+        mount: view,
+        source: 'jsrp',
+        sort: { options: SORT_OPTIONS, defaultValue: 'relevance', value: (window.__jsrpState || {}).sort },
+        filters: { groups: FILTER_GROUPS, value: (window.__jsrpState || {}).f },
+        count: function(draft){ return window.__jsrpCount(Object.assign({}, window.__jsrpState, { f: draft })); }
       });
+      // normalise whatever the URL carried (unknown ids dropped) back into state
+      (function(){ var st = sf.getState(), s = window.__jsrpState; s.sort = st.sort; s.f = st.filters; })();
 
-      // ── Filter modal ─────────────────────────────────────────────────
-      // Filter groups — matched 1:1 with the desktop JSRP filter set
-      // (FILTERS array at line ~11115 in this file). Same 5 groups,
-      // same options, same labels. `top` = popular pills shown inline;
-      // `all` = full option list shown in the See-all sub-sheet.
-      // Sourced from desktop's POPULAR map for `top` selection.
-      // FILTER_GROUPS — ported 1:1 from index.html mobile reference (line ~8570).
-      // Each option carries an id, label, and count (real-feeling estimates).
-      // POPULAR map keeps the 3-4 most-tapped options inline; the rest live
-      // behind the "See all N" sub-sheet. Selected options that AREN'T in
-      // POPULAR get prepended to the inline pills so they stay visible.
-      var FILTER_GROUPS = [
-        { key:'location', name:'Location', searchable:true,
-          options:[
-            {id:'all-india',label:'All India',count:28969},
-            {id:'bangalore',label:'Bangalore',count:8421},
-            {id:'hyderabad',label:'Hyderabad',count:5234},
-            {id:'pune',label:'Pune',count:4180},
-            {id:'mumbai',label:'Mumbai',count:3672},
-            {id:'chennai',label:'Chennai',count:3121},
-            {id:'delhi-ncr',label:'Delhi NCR',count:2987},
-            {id:'gurgaon',label:'Gurgaon',count:2410},
-            {id:'noida',label:'Noida',count:1908},
-            {id:'kolkata',label:'Kolkata',count:1240},
-            {id:'ahmedabad',label:'Ahmedabad',count:980},
-            {id:'jaipur',label:'Jaipur',count:740}
-          ] },
-        { key:'experience', name:'Experience',
-          options:[
-            {id:'0-1',label:'0 to 1 Years',count:4120},
-            {id:'1-3',label:'1 to 3 Years',count:12480},
-            {id:'3-6',label:'3 to 6 Years',count:18230},
-            {id:'6-8',label:'6 to 8 Years',count:23350},
-            {id:'8-10',label:'8 to 10 Years',count:15740},
-            {id:'10-15',label:'10 to 15 Years',count:9820},
-            {id:'15+',label:'15+ Years',count:4150}
-          ] },
-        { key:'salary', name:'Salary',
-          options:[
-            {id:'0-3',label:'0 To 3 Lakh',count:1820},
-            {id:'3-5',label:'3 To 5 Lakh',count:2080},
-            {id:'5-10',label:'5 To 10 Lakh',count:7421},
-            {id:'10-15',label:'10 To 15 Lakh',count:6240},
-            {id:'15-25',label:'15 To 25 Lakh',count:4980},
-            {id:'25-50',label:'25 To 50 Lakh',count:2110},
-            {id:'50+',label:'50 Lakh+',count:580}
-          ] },
-        { key:'jobtype', name:'Job Type',
-          options:[
-            {id:'permanent',label:'Permanent',count:24820},
-            {id:'contractual',label:'Contractual',count:3210},
-            {id:'freelance',label:'Freelance',count:590},
-            {id:'internship',label:'Internship',count:349}
-          ] },
-        { key:'jobmode', name:'Job Mode',
-          options:[
-            {id:'onsite',label:'On Site',count:18500},
-            {id:'remote',label:'Remote',count:4890},
-            {id:'hybrid',label:'Hybrid',count:5579}
-          ] }
-      ];
-      var POPULAR = {
-        location:['bangalore','hyderabad','pune','mumbai'],
-        experience:['1-3','3-6','6-8'],
-        salary:['5-10','10-15','15-25'],
-        jobtype:['permanent','contractual','freelance','internship'],
-        jobmode:['onsite','remote','hybrid']
-      };
-
-      // Selection state — set-shape per group { id: true }. Same shape as desktop.
-      var selected = {};
-      FILTER_GROUPS.forEach(function(g){ selected[g.key] = {}; });
-
-      var filterBtn   = document.getElementById('jsrpMFilterBtn');
-      var filterSheet = document.getElementById('jsrpMFilterSheet');
-      var filterBd    = document.getElementById('jsrpMFilterBd');
-      var filterClose = document.getElementById('jsrpMFilterClose');
-      var filterClear = document.getElementById('jsrpMFilterClear');           // header (may be absent)
-      var filterFootClear = document.getElementById('jsrpMFilterFootClear');   // footer
-      var filterApply = document.getElementById('jsrpMFilterApply');
-      var filterBody  = document.getElementById('jsrpMFilterBody');
-      var filterBadge = document.getElementById('jsrpMFilterBadge');
-      var filterCount = document.getElementById('jsrpMFilterCount');
-
-      // ── Helpers (mirror desktop fm* helpers) ─────────────────────────
-      function fmt(n){ return n == null ? '' : n.toLocaleString('en-IN'); }
-      function findGroup(k){ for (var i=0;i<FILTER_GROUPS.length;i++) if (FILTER_GROUPS[i].key===k) return FILTER_GROUPS[i]; return null; }
-      function findOpt(g, id){ for (var i=0;i<g.options.length;i++) if (g.options[i].id===id) return g.options[i]; return null; }
-      function selKeys(k){ return Object.keys(selected[k]).filter(function(id){ return selected[k][id]; }); }
-      function selHas(k, id){ return !!selected[k][id]; }
-      function selToggle(k, id){ if (selected[k][id]) delete selected[k][id]; else selected[k][id] = true; }
-      function selClear(k){ selected[k] = {}; }
-      function totalSelected(){
-        var n = 0;
-        FILTER_GROUPS.forEach(function(g){ n += selKeys(g.key).length; });
-        return n;
-      }
-      // Job-count estimator — sums option counts within a group (intra-group
-      // OR), then intersects across groups via a 0.78^n shrink factor.
-      // Same model as desktop's fmEstimateJobs.
-      function estimateJobs(){
-        var BASE = 28969;
-        var sets = [];
-        FILTER_GROUPS.forEach(function(g){
-          var sel = selKeys(g.key); if (sel.length === 0) return;
-          var sum = 0;
-          sel.forEach(function(id){ var o = findOpt(g, id); if (o && o.count) sum += o.count; });
-          sets.push(Math.min(sum, BASE));
-        });
-        if (sets.length === 0) return BASE;
-        var minSet = Math.min.apply(null, sets);
-        var factor = Math.pow(0.78, sets.length - 1);
-        return Math.max(1, Math.round(minSet * factor));
-      }
-      // Builds the inline pill list for a card: any SELECTED options not in
-      // POPULAR get prepended (marked .is-extra) so they stay visible; then
-      // the POPULAR ids in order. Dedupe via a seen map.
-      function buildCardPills(g){
-        var popular = POPULAR[g.key] || g.options.slice(0, 4).map(function(o){ return o.id; });
-        var sel = selKeys(g.key);
-        var extras = sel.filter(function(id){ return popular.indexOf(id) === -1; });
-        var ids = extras.concat(popular);
-        var seen = {};
-        var out = [];
-        ids.forEach(function(id){
-          if (seen[id]) return; seen[id] = true;
-          var o = findOpt(g, id);
-          if (o) out.push({ opt: o, isExtra: extras.indexOf(id) !== -1 });
-        });
-        return out;
-      }
-
-      // ── Render: filter modal body (cards with pills) ─────────────────
-      function renderFilterBody(){
-        if (!filterBody) return;
-        var html = FILTER_GROUPS.map(function(g){
-          var sel = selKeys(g.key);
-          var hasSelection = sel.length > 0;
-          var cardCls = 'jsrp-m-filter-card' + (hasSelection ? ' has-selection' : '');
-          // Inline pills (popular + selected-extras)
-          var pills = buildCardPills(g).map(function(item){
-            var on = selHas(g.key, item.opt.id) ? ' is-on' : '';
-            var extra = item.isExtra ? ' is-extra' : '';
-            var countSpan = item.opt.count != null
-              ? '<span class="jsrp-m-filter-pill-count">' + fmt(item.opt.count) + '</span>'
-              : '';
-            return '<button class="jsrp-m-filter-pill' + on + extra + '" ' +
-                   'data-grp="' + g.key + '" data-opt="' + item.opt.id + '" type="button">' +
-                   '<span>' + item.opt.label + '</span>' + countSpan +
-                   '</button>';
-          }).join('');
-          // "See all N" appears only when there are options outside the
-          // popular set that aren't already selected (hidden options exist).
-          var popularSet = {};
-          (POPULAR[g.key] || g.options.slice(0, 4).map(function(o){ return o.id; })).forEach(function(id){ popularSet[id] = true; });
-          var hidden = 0;
-          g.options.forEach(function(o){ if (!popularSet[o.id] && !selHas(g.key, o.id)) hidden++; });
-          var seeMore = hidden > 0
-            ? '<button class="jsrp-m-filter-seeall" data-seeall="' + g.key + '" type="button">See all ' + g.options.length + '</button>'
-            : '';
-          return '<div class="' + cardCls + '" data-grp="' + g.key + '">' +
-            '<div class="jsrp-m-filter-card-h">' +
-              '<span class="jsrp-m-filter-card-h-title">' + g.name +
-                (hasSelection ? '<span class="jsrp-m-filter-card-h-count pill">' + sel.length + '</span>' : '') +
-              '</span>' +
-              '<button class="jsrp-m-filter-card-clear" data-clear="' + g.key + '" type="button">Clear</button>' +
-            '</div>' +
-            '<div class="jsrp-m-filter-pills">' + pills + '</div>' +
-            seeMore +
-          '</div>';
-        }).join('');
-        filterBody.innerHTML = html;
-      }
-
-      // Update the apply-button job count + topbar filter badge.
-      function updateFilterBadge(){
-        var total = totalSelected();
-        if (filterBadge) {
-          filterBadge.textContent = total;
-          filterBadge.classList.toggle('show', total > 0);
-        }
-        if (filterCount) filterCount.textContent = fmt(estimateJobs());
-      }
-
-      // Single re-render entry-point — keeps filter body + apply count
-      // + sub-sheet rows all in sync after any selection change.
-      function renderAll(){
-        renderFilterBody();
-        updateFilterBadge();
-        if (activeSubGroup) renderSubBody();
-      }
-
-      // ── Open / close handlers ───────────────────────────────────────
-      function openFilter(){
-        renderAll();
-        filterSheet.classList.add('show');
-        filterBd.classList.add('show');
-      }
-      function closeFilter(){
-        filterSheet.classList.remove('show');
-        filterBd.classList.remove('show');
-      }
-      filterBtn && filterBtn.addEventListener('click', openFilter);
-      filterClose && filterClose.addEventListener('click', closeFilter);
-      filterBd && filterBd.addEventListener('click', closeFilter);
-
-      function clearAll(){
-        FILTER_GROUPS.forEach(function(g){ selClear(g.key); });
-        renderAll();
-      }
-      filterClear && filterClear.addEventListener('click', clearAll);
-      filterFootClear && filterFootClear.addEventListener('click', clearAll);
-      filterApply && filterApply.addEventListener('click', function(){
-        updateFilterBadge();
-        closeFilter();
-        if (typeof showToast === 'function') showToast('Filters applied');
+      document.addEventListener('shine:sort', function(e){
+        if (e.detail.source !== 'jsrp') return;
+        var s = window.__jsrpState; s.sort = e.detail.value;
+        history.replaceState(s, '', window.__jsrpUrl(s));       // URL reflects the view; Back still leaves the screen
+        window.__jsrpReload(s, { keepContext: true });
       });
-
-      // Delegate pill toggles + See all + per-card Clear
-      filterBody && filterBody.addEventListener('click', function(e){
-        var pill = e.target.closest('.jsrp-m-filter-pill');
-        if (pill) {
-          var grp = pill.getAttribute('data-grp');
-          selToggle(grp, pill.getAttribute('data-opt'));
-          renderAll();
-          return;
-        }
-        var seeBtn = e.target.closest('[data-seeall]');
-        if (seeBtn) { openSub(seeBtn.getAttribute('data-seeall')); return; }
-        var clrBtn = e.target.closest('[data-clear]');
-        if (clrBtn) {
-          selClear(clrBtn.getAttribute('data-clear'));
-          renderAll();
-        }
+      document.addEventListener('shine:filter', function(e){
+        if (e.detail.source !== 'jsrp') return;
+        var s = window.__jsrpState; s.f = e.detail.value;
+        history.replaceState(s, '', window.__jsrpUrl(s));
+        window.__jsrpPaint(s);
+        window.__jsrpReload(s, { keepContext: true });
+        if (typeof showToast === 'function') showToast(e.detail.applied ? 'Filters applied' : 'Filters cleared');
       });
-
-      // ── See-all sub-sheet ────────────────────────────────────────────
-      var subSheet = document.getElementById('jsrpMSubSheet');
-      var subBd    = document.getElementById('jsrpMSubBd');
-      var subBack  = document.getElementById('jsrpMSubBack');
-      var subClear = document.getElementById('jsrpMSubClear');
-      var subDone  = document.getElementById('jsrpMSubDone');
-      var subTitle = document.getElementById('jsrpMSubTitle');
-      var subBody  = document.getElementById('jsrpMSubBody');
-      var subSrcWrap = document.getElementById('jsrpMSubSearchWrap');
-      var subSrc   = document.getElementById('jsrpMSubSearch');
-      var activeSubGroup = null;
-      var subQuery = '';
-
-      // Builds one sub-sheet row: label + count + checkbox.
-      function makeSubRow(g, opt, isOn){
-        var countSpan = opt.count != null
-          ? '<span class="cnt">' + fmt(opt.count) + '</span>' : '';
-        return '<button class="jsrp-m-sub-row' + (isOn ? ' is-on' : '') + '" ' +
-          'data-opt="' + opt.id + '" type="button">' +
-          '<span class="lbl">' + opt.label + '</span>' +
-          countSpan +
-          '<span class="ck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>' +
-        '</button>';
-      }
-
-      // Renders the sub-sheet body. With a search query, shows a flat
-      // filtered list. Without, splits into "Selected · N" (top) and
-      // "All N <category>" (bottom) sections so picked items stay visible
-      // without scrolling — same UX as desktop.
-      function renderSubBody(){
-        if (!subBody || !activeSubGroup) return;
-        var g = activeSubGroup;
-        var q = subQuery.toLowerCase().trim();
-        if (q) {
-          var hits = g.options.filter(function(o){ return o.label.toLowerCase().indexOf(q) !== -1; });
-          if (hits.length === 0) {
-            subBody.innerHTML = '<div class="jsrp-m-sub-empty" style="padding:40px 16px;text-align:center;color:var(--content-faded);font:600 12px/1.4 var(--font-brand);">No matches</div>';
-            return;
-          }
-          subBody.innerHTML = hits.map(function(o){ return makeSubRow(g, o, selHas(g.key, o.id)); }).join('');
-          return;
-        }
-        var selList = g.options.filter(function(o){ return selHas(g.key, o.id); });
-        var unselList = g.options.filter(function(o){ return !selHas(g.key, o.id); });
-        var html = '';
-        if (selList.length > 0) {
-          html += '<div class="jsrp-m-sub-section">Selected · ' + selList.length + '</div>';
-          html += selList.map(function(o){ return makeSubRow(g, o, true); }).join('');
-        }
-        if (unselList.length > 0) {
-          html += '<div class="jsrp-m-sub-section">All ' + g.options.length + ' ' + g.name.toLowerCase() + '</div>';
-          html += unselList.map(function(o){ return makeSubRow(g, o, false); }).join('');
-        }
-        subBody.innerHTML = html;
-      }
-
-      function openSub(key){
-        var g = findGroup(key);
-        if (!g) return;
-        activeSubGroup = g;
-        subQuery = '';
-        if (subTitle) subTitle.textContent = g.name;
-        if (subSrcWrap) subSrcWrap.style.display = g.searchable ? '' : 'none';
-        if (subSrc) subSrc.value = '';
-        renderSubBody();
-        subSheet.classList.add('show');
-        subBd.classList.add('show');
-      }
-      function closeSub(){
-        subSheet.classList.remove('show');
-        subBd.classList.remove('show');
-        activeSubGroup = null;
-      }
-      subBack && subBack.addEventListener('click', closeSub);
-      subBd && subBd.addEventListener('click', closeSub);
-      subDone && subDone.addEventListener('click', function(){
-        closeSub();
-        renderAll();    // re-render the parent filter body so pill states reflect new selections
-      });
-      subClear && subClear.addEventListener('click', function(){
-        if (!activeSubGroup) return;
-        selClear(activeSubGroup.key);
-        renderAll();    // refresh both sub-sheet rows and parent body counts
-      });
-      subBody && subBody.addEventListener('click', function(e){
-        var row = e.target.closest('.jsrp-m-sub-row');
-        if (!row || !activeSubGroup) return;
-        var id = row.getAttribute('data-opt');
-        selToggle(activeSubGroup.key, id);
-        renderAll();    // re-render so the row's checkbox state, "Selected" section
-                        // header counts, and parent apply-count all stay in sync
-      });
-      subSrc && subSrc.addEventListener('input', function(e){
-        subQuery = e.target.value;
-        renderSubBody();
-      });
+      // empty state → clear filters (goes through the component so badge + URL stay in sync)
+      if (listEl) listEl.addEventListener('click', function(e){
+        if (!e.target.closest('[data-act="clear-filters"]')) return;
+        e.stopPropagation();
+        sf.setState({ filters: {} });
+      }, true);
 
       // ── Feedback widget (2A always-expanded card) ────────────────────
       // Reveals after the 6th card scrolls into view, dismissable via X
       // or thumb tap. Session-persisted so it doesn't reappear.
       (function setupMobileFeedback(){
-        var fb   = document.getElementById('jsrpMFb');
-        var fbBd = document.getElementById('jsrpMFbBd');
-        if (!fb) return;
+        var fb = document.getElementById('jsrpMFb');
+        if (!fb || !window.ShineSheet) return;
         try { if (sessionStorage.getItem('jsrpMFbDone') === '1') return; } catch (e) {}
         if (!('IntersectionObserver' in window)) return;
 
@@ -3350,22 +2645,22 @@ body { background: var(--surface-base, var(--surface-base)); }
         var trigger = findTrigger();
         if (!trigger) return;
 
-        // Open helper — adds .show to sheet + backdrop, adds .fb-open to
-        // the view container so the Sort+Filter floater hides while the
-        // sheet is up (no visual collision).
+        // Shared bottom sheet (inverse variant). The sort-filter bar hides
+        // itself while any other sheet is up, so no .fb-open bookkeeping.
+        // Never stacks on top of a sheet the user opened — waits for it to close.
         function open(){
-          fb.classList.add('show');
-          if (fbBd) fbBd.classList.add('show');
-          view.classList.add('fb-open');
+          if (!window.ShineSheet.top()) { window.ShineSheet.open(fb); return; }
+          document.addEventListener('shine:sheet-closed', function retry(){
+            if (window.ShineSheet.top()) return;
+            document.removeEventListener('shine:sheet-closed', retry);
+            setTimeout(open, 400);
+          });
         }
-        // Done helper — closes sheet, persists session flag so it doesn't
-        // re-trigger this session, releases the floater.
-        function done(){
-          try { sessionStorage.setItem('jsrpMFbDone', '1'); } catch (e) {}
-          fb.classList.remove('show');
-          if (fbBd) fbBd.classList.remove('show');
-          view.classList.remove('fb-open');
-        }
+        function done(){ window.ShineSheet.close(fb, 'api'); }
+        // However it closes (X, backdrop, Escape, a vote) it stays gone this session.
+        fb.addEventListener('shine:sheet-close', function(e){
+          if (e.target === fb) { try { sessionStorage.setItem('jsrpMFbDone', '1'); } catch (x) {} }
+        });
 
         // Trigger when 6th card scrolls into view (400ms settle delay).
         var io2 = new IntersectionObserver(function(entries){
@@ -3378,18 +2673,14 @@ body { background: var(--surface-base, var(--surface-base)); }
         });
         io2.observe(trigger);
 
-        // Close handlers: X button + backdrop tap.
         var fbClose = document.getElementById('jsrpMFbClose');
         fbClose && fbClose.addEventListener('click', done);
-        fbBd && fbBd.addEventListener('click', done);
 
         // Reaction handlers — three-state vote (bad / meh / good).
         // Tapping any reaction collapses the sheet to a green "thanks"
         // state and auto-dismisses after 2s.
         fb.querySelectorAll('.jsrp-m-fb-react').forEach(function(btn){
           btn.addEventListener('click', function(){
-            // Could record btn.dataset.vote here (bad/meh/good) for
-            // analytics; placeholder for now.
             fb.classList.add('is-thanks');
             var h = fb.querySelector('.jsrp-m-fb-h');
             if (h) h.innerHTML =
@@ -3410,21 +2701,35 @@ body { background: var(--surface-base, var(--surface-base)); }
 
       // Re-run the search in place (Edit search submit / browser back-forward):
       // keyword-aware ordering, scroll to top, shimmer while the "API" responds.
+      // Re-run the query in place (search / sort / filter / back-forward): shimmer
+      // while the "API" responds. Search jumps to the top; sort and filter keep
+      // the user at the results (scroll waits until the sheet has let go).
+      var reloadTimer = 0;
       window.__jsrpReload = function(s, opts){
-        orderJobs(s);
-        // a new search starts at "Relevance · Best match" again
-        if (sortSheet) sortSheet.querySelectorAll('.jsrp-m-sort-row').forEach(function(r){ r.classList.toggle('is-on', r.getAttribute('data-sort') === 'relevance'); });
+        opts = opts || {};
+        runQuery(s);
+        mGen++;
         teardownInfiniteScroll();
         mLoadedCount = 0; mLoading = false;
-        if (!(opts && opts.instant)) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          if (listEl) { listEl.innerHTML = ''; for (var i = 0; i < 4; i++) listEl.insertAdjacentHTML('beforeend', shimmerCardHTML()); }
-          setTimeout(setupInfiniteScroll, 900);
-        } else setupInfiniteScroll();
+        clearTimeout(reloadTimer);
+        if (opts.instant) { renderResults(); return; }
+        afterSheets(function(){
+          if (opts.keepContext) {
+            var top = listEl ? listEl.getBoundingClientRect().top + window.scrollY - 88 : 0;
+            if (window.scrollY > top) window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+          } else window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        if (listEl) { listEl.innerHTML = ''; for (var i = 0; i < 4; i++) listEl.insertAdjacentHTML('beforeend', shimmerCardHTML()); }
+        reloadTimer = setTimeout(renderResults, 900);
       };
+      function afterSheets(fn){
+        if (!document.documentElement.classList.contains('bs-lock')) { fn(); return; }
+        document.addEventListener('shine:sheet-closed', function once(){
+          if (document.documentElement.classList.contains('bs-lock')) return;
+          document.removeEventListener('shine:sheet-closed', once); fn();
+        });
+      }
 
-      // Initial badge state
-      updateFilterBadge();
     })();
 
   </script>

@@ -6,14 +6,16 @@ Mobile-only, single-screen (100dvh, no scroll) logged-out homepage for the Shine
 
 ```
 index.html                  logged-out app home (Shine logo + icons are inline SVG; GitHub Pages serves it at the root URL)
-jsrp-logout.html            logged-out app JSRP — search results (single file; links the search-modal component)
+jsrp-logout.html            logged-out app JSRP — search results (links the search-modal, bottom-sheet + sort-filter components)
 css/app-home-logout.css     DS tokens (mobile column), components, page styles
 js/app-home-logout.js       headline reel, bubble drift, logo shuffle, grey accents, roles tooltip
 assets/logos/*.svg          company logos (viewBox cropped to the mark)
 components/search-modal/    reusable "What's next for you?" search modal (css + js)
+components/bottom-sheet/    reusable bottom sheet — the container behind every slide-up panel (css + js)
+components/sort-filter/     reusable Sort · Filter bar + sheets for any results screen (css + js; needs bottom-sheet)
 ```
 
-**Flow:** home → **Explore jobs** opens the search modal → **Search Jobs** lands on `jsrp-logout.html?q=…&loc=…&exp=…` → **Edit search** reopens the modal prefilled and updates the results in place (browser back/forward walks the searches; the ‹ button returns home).
+**Flow:** home → **Explore jobs** opens the search modal → **Search Jobs** lands on `jsrp-logout.html?q=…&loc=…&exp=…` → **Edit search** reopens the modal prefilled and updates the results in place (browser back/forward walks the searches; the ‹ button returns home). **Sort · Filter** re-query the results in place and mirror state in the URL (`?sort=recent&f.location=bangalore`) — see `components/sort-filter/README.md`.
 
 **Explore jobs** opens the search modal (`data-shine-search data-ssm-source="home"`). The component is app-wide: any page includes `components/search-modal/search-modal.css` + `.js` and adds `data-shine-search` to a trigger. Results arrive as a `shine:search` DOM event — see `components/search-modal/README.md`.
 
