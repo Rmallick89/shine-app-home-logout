@@ -133,7 +133,7 @@ On submit the order is:
 - **Scroll lock and motion:** the page behind is scroll-locked while the modal is open. Motion turns off under `prefers-reduced-motion`.
 - **Typeface:** Plus Jakarta Sans throughout. JSRP mixed in Inter.
 - **Tokens:** values snapped to DS tokens.
-  - Field 48 px (`size.control.lg`), radius 12, `stroke.neutral.base` border.
+  - Field 44 px (`size.control.md`), white fill, radius 12, 12 px inset, `stroke.neutral.base` border — the same A.01 Input as the login flow (v1.1.0).
   - CTA uses Primary · Brand (`brand-500`). Search is the one CTA allowed to be brand blue.
 
 ## Where it's used
@@ -142,3 +142,8 @@ On submit the order is:
 |---|---|---|
 | App home (logged out) — `index.html` | Explore jobs pill → submit goes to the JSRP (`resultsUrl`) | new |
 | App JSRP (logged out) — `jsrp-logout.html` | Edit search (prefilled with the live query, location, experience) → results update in place | edit |
+
+## Changelog
+
+- **v1.1.0** — fields now match the login flow's input exactly: height 48 → 44, beige fill → white, 16 → 12 px inset, placeholder weight 400 → 500, focus border brand-500 → brand-600 with a 3 px brand ring at 18 % (was 4 px at 10 %), hover tint removed. No markup, API or behaviour changes.
+- **v1.0.0** — first version, ported from the JSRP Edit search overlay.

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   SHINE · SEARCH MODAL  (app component)                       v1.0.0
+   SHINE · SEARCH MODAL  (app component)                       v1.1.0
    Pair with search-modal.css. Zero dependencies, no build step.
 
    Open it from anywhere — three equivalent ways:
@@ -424,7 +424,7 @@
 
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', mount); else mount();
 
-  global.ShineSearch = { open: open, close: close, configure: configure, isOpen: isOpen, toast: toast, version: '1.0.0' };
+  global.ShineSearch = { open: open, close: close, configure: configure, isOpen: isOpen, toast: toast, version: '1.1.0' };
   // drop-in for pages already calling the JSRP overlay API
   if (typeof global.openSearchOverlay !== 'function') {
     global.openSearchOverlay = function (prefill) { open(prefill ? merge({ mode: 'edit', source: 'jsrp' }, prefill) : {}); };
