@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   SHINE · BOTTOM SHEET  (app component)                        v1.0.0
+   SHINE · BOTTOM SHEET  (app component)                        v1.1.0
    Pair with bottom-sheet.css. Zero dependencies, no build step.
 
    Markup (any element with .bs — it starts closed via [hidden]):
@@ -14,6 +14,16 @@
        <div class="bs-foot">…</div>          (optional)
      </div>
 
+   Call to action — two behaviours (.bs-actions = the sheet's button group):
+     inline   <div class="bs-body">… <div class="bs-actions">…</div></div>
+              follows the content, scrolls with it (nudges, confirm, OTP)
+     sticky   <div class="bs-body">…</div><div class="bs-foot"><div class="bs-actions">…</div></div>
+              pinned; body scrolls under it (filters, pickers, lists, forms)
+     data-bs-cta="inline|sticky|auto" on .bs → ShineSheet places .bs-actions
+     wherever you wrote it; "auto" keeps it inline while everything fits and
+     pins it as soon as the body overflows (small phone, keyboard, long list).
+     Live state: data-bs-cta-state="inline|sticky" + event shine:sheet-cta.
+
    Open / close:
      <button data-bs-open="#sortSheet">Sort</button>          declarative
      ShineSheet.open('#sortSheet', { trigger: btn })          programmatic
@@ -25,6 +35,7 @@
      data-bs-drag="false"      no drag-to-dismiss
      data-bs-scrim="strong"    45% scrim + blur (nudges)  ·  "none" = no scrim
      data-bs-autofocus         on a child → focused on open (default: the sheet)
+     data-bs-cta="…"           inline | sticky | auto — call-to-action behaviour
      .bs--nested               opens inside its parent .bs and covers it
 
    Events (dispatched on the sheet, bubbling):
@@ -33,6 +44,7 @@
      shine:sheet-close   cancelable   detail { reason }   reason: close-button
                                       | backdrop | escape | drag | api
      shine:sheet-closed               detail { reason }
+     shine:sheet-cta                  detail { state }    inline ⇄ sticky (auto)
 
    Behaviour (WAI-ARIA dialog pattern + platform sheet conventions):
      role="dialog" + aria-modal + aria-labelledby (from .bs-title) · focus
@@ -89,11 +101,85 @@
       st.body = body;
       body.addEventListener('scroll', function () { syncScroll(el); }, { passive: true });
     }
+    // call to action — inline (in the body) or sticky (in the foot)
+    var actions = body && el.querySelector(':scope > .bs-body > .bs-actions, :scope > .bs-foot > .bs-actions');
+    if (actions) {
+      st.actions = actions;
+      st.cta = el.getAttribute('data-bs-cta');
+      var wrote = actions.parentNode === body ? 'inline' : 'sticky';
+      placeCta(el, st.cta === 'inline' || st.cta === 'sticky' ? st.cta : st.cta === 'auto' ? 'inline' : wrote, true);
+    }
     // drag to dismiss — from the handle or header only, so body scrolling is never hijacked
     if (!attr(el, 'data-bs-drag', 'false')) {
       Array.prototype.forEach.call(el.querySelectorAll(':scope > .bs-handle, :scope > .bs-head'), function (h) { dragify(el, h); });
     }
     return st;
+  }
+
+  /* ── call to action placement ───────────────────────────────────── */
+  function placeCta(el, state, silent) {
+    var st = el.__bs, a = st.actions, body = st.body;
+    if (!a || !body) return;
+    var prev = el.getAttribute('data-bs-cta-state');
+    var had = a.contains(doc.activeElement) ? doc.activeElement : null;   // keep focus across the move
+    if (state === 'sticky') {
+      var foot = a.parentNode.classList && a.parentNode.classList.contains('bs-foot') ? a.parentNode : st.foot;
+      if (!foot) {
+        foot = doc.createElement('div'); foot.className = 'bs-foot';
+        st.ownFoot = true;
+      }
+      st.foot = foot;
+      if (foot.parentNode !== el) body.parentNode.insertBefore(foot, body.nextSibling);
+      if (a.parentNode !== foot) foot.appendChild(a);
+      foot.hidden = false;
+    } else {
+      if (a.parentNode !== body) body.appendChild(a);
+      if (st.foot && !st.foot.querySelector('*')) st.foot.hidden = true;
+    }
+    if (had && doc.activeElement !== had) { try { had.focus({ preventScroll: true }); } catch (e) { had.focus(); } }
+    el.setAttribute('data-bs-cta-state', state);
+    if (!silent && prev && prev !== state) emit(el, 'shine:sheet-cta', { state: state });
+  }
+  // auto: inline while everything fits, sticky once the body overflows. Inline is a few px taller than
+  // the sticky footer (24 + gutter vs 16 + 16), so returning to inline needs that much spare room → no flip-flop.
+  function maxSheetHeight(el) {
+    var vh = global.visualViewport ? Math.min(global.visualViewport.height, global.innerHeight) : global.innerHeight;
+    var m = parseFloat(getComputedStyle(el).maxHeight);
+    return isNaN(m) ? vh * 0.9 : Math.min(m, isNested(el) ? m : vh * 0.9);
+  }
+  function syncCta(el) {
+    var st = el.__bs;
+    if (!st || !st.actions || st.cta !== 'auto' || el.hidden) return;
+    var b = st.body, state = el.getAttribute('data-bs-cta-state');
+    if (state !== 'sticky') {
+      if (b.scrollHeight > b.clientHeight + 1) placeCta(el, 'sticky');
+    } else {
+      var f = st.foot, cs = getComputedStyle(f), g = parseFloat(getComputedStyle(el).getPropertyValue('--bs-gutter')) || 24;
+      var safe = Math.max(0, parseFloat(cs.paddingBottom) - parseFloat(cs.paddingTop));          // home-indicator inset
+      var inlineH = st.actions.offsetHeight + 2 * g + safe;                                    // 24 above + gutter/safe below
+      var room = b.clientHeight + f.offsetHeight + Math.max(0, maxSheetHeight(el) - el.offsetHeight);
+      if (b.scrollHeight + inlineH <= room - 1) placeCta(el, 'inline');
+    }
+  }
+  function watchCta(el, on) {
+    var st = el.__bs;
+    if (!st || !st.actions || st.cta !== 'auto') return;
+    if (on) {
+      if (st.watch) return;
+      var raf = 0, run = function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(function () { syncCta(el); syncScroll(el); }); };
+      st.watch = { run: run, ro: global.ResizeObserver ? new ResizeObserver(run) : null, mo: global.MutationObserver ? new MutationObserver(run) : null };
+      if (st.watch.ro) { st.watch.ro.observe(st.body); Array.prototype.forEach.call(st.body.children, function (c) { st.watch.ro.observe(c); }); }
+      if (st.watch.mo) st.watch.mo.observe(st.body, { childList: true, subtree: true, characterData: true });
+      global.addEventListener('resize', run);
+      if (global.visualViewport) global.visualViewport.addEventListener('resize', run);
+      syncCta(el);
+    } else if (st.watch) {
+      if (st.watch.ro) st.watch.ro.disconnect();
+      if (st.watch.mo) st.watch.mo.disconnect();
+      global.removeEventListener('resize', st.watch.run);
+      if (global.visualViewport) global.visualViewport.removeEventListener('resize', st.watch.run);
+      st.watch = null;
+    }
   }
 
   function syncScroll(el) {
@@ -171,6 +257,7 @@
     var scrim = scrimFor(el);
     el.hidden = false; el.style.transform = '';
     layer();
+    watchCta(el, true);
     void el.offsetHeight;                          // commit the closed position so the slide runs
     el.classList.add('is-open');
     if (scrim) scrim.classList.add('is-open');
@@ -209,6 +296,7 @@
     st.timer = setTimeout(function () {
       if (stack.indexOf(el) > -1) return;            // reopened meanwhile
       el.hidden = true;
+      watchCta(el, false);
       emit(el, 'shine:sheet-closed', { reason: reason });
     }, durationOf(el) + 20);
     return true;
@@ -258,5 +346,8 @@
   }
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', function () { init(); }); else init();
 
-  global.ShineSheet = { open: open, close: close, toggle: toggle, isOpen: isOpen, top: top, closeAll: closeAll, init: init, version: '1.0.0' };
+  // re-measure an auto sheet after the page swaps its content (optional — a MutationObserver already does this)
+  function refresh(target) { var el = $(target); if (el && el.__bs) { syncCta(el); syncScroll(el); } }
+
+  global.ShineSheet = { open: open, close: close, toggle: toggle, isOpen: isOpen, top: top, closeAll: closeAll, init: init, refresh: refresh, version: '1.1.0' };
 })(window);

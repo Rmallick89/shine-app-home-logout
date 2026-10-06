@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   SHINE · BOTTOM SHEET  (app component)                        v1.0.0
+   SHINE · BOTTOM SHEET  (app component)                        v1.1.0
    The one sheet primitive behind every slide-up panel in the app:
    Sort, Filter (+ its "See all" sub-sheet), Share, Save, Feedback…
    ───────────────────────────────────────────────────────────────────────
@@ -159,6 +159,29 @@
   padding: 16px var(--bs-gutter) calc(16px + env(safe-area-inset-bottom, 0px));
   transition: box-shadow 160ms ease;
 }
+/* ── Call to action · two behaviours (v1.1) ─────────────────────────────
+   One CTA group per sheet: .bs-actions. Where it lives decides how it behaves.
+     INLINE  — last child of .bs-body. Follows the content and scrolls with it.
+               For short, read-then-act sheets: nudges, confirmations, OTP entry.
+     STICKY  — inside .bs-foot, after .bs-body. Pinned while the body scrolls under
+               it; divider only while more content sits below. For scrolling or
+               editable content: filters, pickers, lists, long forms.
+     data-bs-cta="inline" | "sticky" | "auto" on .bs makes ShineSheet place it;
+     "auto" = inline while everything fits, sticky as soon as the body overflows.
+     ShineSheet mirrors the live state in data-bs-cta-state on the sheet.        */
+.bs-body--gutter { padding-left: var(--bs-gutter); padding-right: var(--bs-gutter); }
+.bs-actions { display: flex; flex-direction: column; gap: 10px; }
+.bs-actions--row { flex-direction: row; }
+.bs-actions--row > * { flex: 1 1 0; min-width: 0; }
+/* inline: 24 above (spacing.layout.sm), gutter + home indicator below */
+.bs-body > .bs-actions {
+  margin-top: var(--bs-gutter);
+  padding-bottom: calc(var(--bs-gutter) + env(safe-area-inset-bottom, 0px));
+}
+/* sticky: the footer supplies the padding + scroll divider */
+.bs-foot > .bs-actions { margin: 0; padding: 0; }
+.bs-foot[hidden] { display: none !important; }
+
 /* elevation appears only when content actually scrolls under head / foot */
 .bs.is-scrolled .bs-head { box-shadow: var(--bs-divider-shadow); }
 .bs.has-more .bs-foot { box-shadow: 0 -6px 12px -8px rgba(13,17,23,.18); }

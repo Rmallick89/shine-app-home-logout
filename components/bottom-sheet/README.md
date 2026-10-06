@@ -1,4 +1,4 @@
-# Bottom sheet — app component
+# Bottom sheet — app component · v1.1.0
 
 The one container behind every slide-up panel in the Shine app: Sort, Filter (and its "See all" sub-sheet), Share, Save, the "Are these jobs relevant?" quick check, and anything new.
 
@@ -7,6 +7,7 @@ The component owns the **container** only:
 - position, surface, radius and elevation;
 - the handle, header and close button;
 - the scrolling body and the footer;
+- where the call to action sits and how it behaves (inline or sticky);
 - the scrim, motion and closed state.
 
 What goes inside belongs to whoever uses it (the sort-filter component, a page).
@@ -38,6 +39,45 @@ What goes inside belongs to whoever uses it (the sort-filter component, a page).
 </div>
 ```
 
+## Call to action: inline or sticky
+
+Every sheet has at most one button group, `.bs-actions`. **Where it sits decides how it behaves**, and you choose by the sheet's content and behaviour:
+
+| Type | Markup | Behaviour | Use it for |
+|---|---|---|---|
+| **Inline** | `.bs-actions` as the last child of `.bs-body` | Follows the content and scrolls with it. 24 px above, gutter + home-indicator inset below, no divider. | Short, read-then-act sheets that fit without scrolling: Save / Share / sign-up nudges, confirmations, OTP entry. The user reads, then acts. |
+| **Sticky** | `.bs-actions` inside `.bs-foot`, after `.bs-body` | Pinned to the bottom while the body scrolls under it. 16 px padding (+ home-indicator inset); the divider shadow shows only while more content sits below. | Content that scrolls or that the user edits / selects before confirming: filters (Clear · Apply), pickers and selection lists, long forms. The action must always be reachable. |
+
+```html
+<!-- inline -->
+<div class="bs" data-bs-cta="inline" hidden>
+  <div class="bs-handle"></div>
+  <div class="bs-head">…</div>
+  <div class="bs-body bs-body--gutter">
+    <p>Keep your shortlist in one place.</p>
+    <div class="bs-actions"><button>Register</button><button>Log in</button></div>
+  </div>
+</div>
+
+<!-- sticky -->
+<div class="bs" data-bs-cta="sticky" hidden>
+  <div class="bs-handle"></div>
+  <div class="bs-head">…</div>
+  <div class="bs-body bs-body--gutter">…long list…</div>
+  <div class="bs-foot"><div class="bs-actions bs-actions--row"><button>Clear</button><button>Apply</button></div></div>
+</div>
+```
+
+| Attribute / class | What it does |
+|---|---|
+| `data-bs-cta="inline"` / `"sticky"` | ShineSheet puts `.bs-actions` in that place, wherever you wrote it. Without the attribute the markup decides. |
+| `data-bs-cta="auto"` | For content of unknown length (2 or 12 accounts, a small phone, the keyboard open): inline while everything fits, sticky the moment the body overflows, back to inline when room returns. It re-checks on open, on resize / keyboard and whenever the body's content changes, keeps focus on a button that moves, and needs a few px of spare room before going back so it never flickers. |
+| `data-bs-cta-state` | Set by ShineSheet on the sheet: `inline` or `sticky` (live for `auto`). Style against it if needed. |
+| `.bs-actions--row` | Buttons side by side, equal width (Clear · Apply, Log in · Register). Default is stacked, 10 px apart. |
+| `.bs-body--gutter` | Pads the body with the sheet gutter (24 px), for free-form content. Lists that bring their own row padding leave it off. |
+
+Rules of thumb: one CTA group per sheet; don't add your own bottom padding to a body that ends in inline actions (they already clear the home indicator); a sheet that only offers a list of tappable rows (Sort) needs no CTA at all.
+
 The script adds `role="dialog"`, `aria-modal` and `aria-labelledby` (taken from `.bs-title`). A closed sheet is always `[hidden]`, which means `display: none`. Nothing sits parked off-screen where its shadow could leak into the viewport. That leak caused the dark band at the bottom of the JSRP.
 
 | Variant / attribute | Use |
@@ -51,6 +91,7 @@ The script adds `role="dialog"`, `aria-modal` and `aria-labelledby` (taken from 
 | `data-bs-drag="false"` | Turns off drag-to-dismiss only. |
 | `data-bs-autofocus` | Set on a child to focus it on open. By default the sheet itself takes focus, so the keyboard doesn't pop up. |
 | `.bs--pad-bottom` | Adds bottom padding that clears the home indicator, for sheets with no footer. |
+| `data-bs-cta` | `inline` · `sticky` · `auto` — call-to-action behaviour, see above. |
 
 ## Open / close
 
@@ -64,6 +105,7 @@ ShineSheet.open('#citySheet', { trigger: btn });   // trigger gets aria-expanded
 ShineSheet.close('#citySheet');                    // reason 'api'
 ShineSheet.toggle(el)  ·  ShineSheet.isOpen(el)  ·  ShineSheet.top()  ·  ShineSheet.closeAll()
 ShineSheet.init(root)                              // wire sheets added to the DOM later (open() also does it lazily)
+ShineSheet.refresh(el)                             // re-measure an auto CTA sheet now (optional; content changes are watched)
 ```
 
 ## Events
@@ -76,6 +118,7 @@ All events are dispatched on the sheet and bubble, so `document` can listen.
 | `shine:sheet-opened` | — | after the slide-in |
 | `shine:sheet-close` | yes, e.g. for "discard changes?" | `{ reason }`, one of `close-button`, `backdrop`, `escape`, `drag`, `api`, `parent`, or the caller's own value |
 | `shine:sheet-closed` | — | `{ reason }`, after the slide-out, once `[hidden]` is back |
+| `shine:sheet-cta` | — | `{ state }` — an `auto` sheet switched its call to action between `inline` and `sticky` |
 
 ## Behaviour
 
@@ -106,3 +149,9 @@ Values are snapped to `design-system/DESIGN-SYSTEM.md`:
 | Screen | Sheets |
 |---|---|
 | App JSRP (logged out): `jsrp-logout.html` | Sort, Filter + See all (through sort-filter), Share and Save nudges (`strong`), relevance quick check (`inverse`) |
+| App login (prototype 2): `App login/samples/app-login-prototype2.html` | OTP entry — `strong`, **inline** CTA · account picker — `strong`, **sticky** CTA · demo data — list, no CTA |
+
+## Changelog
+
+- **1.1.0** — Call-to-action behaviours: `.bs-actions` inline (in the body) or sticky (in the foot), `data-bs-cta="inline|sticky|auto"`, `data-bs-cta-state`, `shine:sheet-cta`, `ShineSheet.refresh()`, `.bs-actions--row`, `.bs-body--gutter`. Existing sheets are unchanged (JSRP sheets verified pixel-identical).
+- **1.0.0** — First release.
