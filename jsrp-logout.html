@@ -581,19 +581,6 @@ button{ font-family:inherit; cursor:pointer }
     width: var(--size-icon-md);
     height: var(--size-icon-md);
   }
-.toast {
-    position:fixed; bottom:32px; left:50%;
-    transform:translateX(-50%) translateY(40px);
-    background:var(--content-base); color:var(--content-on-fill-dark);
-    padding:12px 20px; border-radius:100px;
-    font-size:14px; font-weight:600;
-    box-shadow:0 10px 24px rgba(16,24,40,.20);
-    opacity:0; transition:all .25s ease;
-    pointer-events:none; z-index:1000;
-    display:inline-flex; align-items:center; gap:8px;
-  }
-.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-.toast svg { width:14px; height:14px; color:var(--success-green); }
 
 
 
@@ -1470,6 +1457,8 @@ body { background: var(--surface-base, var(--surface-base)); }
 <link rel="stylesheet" href="components/search-modal/search-modal.css">
 <link rel="stylesheet" href="components/bottom-sheet/bottom-sheet.css">
 <link rel="stylesheet" href="components/sort-filter/sort-filter.css">
+<!-- COMPONENT · notify v1.0.0 -->
+<link rel="stylesheet" href="components/notify/notify.css">
 </head>
 <body>
 <div class="view-jsrp-m" id="viewJsrpM">
@@ -1674,23 +1663,18 @@ body { background: var(--surface-base, var(--surface-base)); }
     </div>
   </div>
 
-  <div class="toast" id="toast">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
-    <span id="toastMsg">Done</span>
-  </div>
 
 <script src="components/bottom-sheet/bottom-sheet.js"></script>
 <script src="components/sort-filter/sort-filter.js"></script>
 <script>
     // === Toast ===
-    function showToast(msg) {
-      var t = document.getElementById('toast');
-      var m = document.getElementById('toastMsg');
-      m.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+    // toasts come from the shared notify component (App-logout/app-components/notify)
+    function showToast(msg, tone) {
+      if (window.ShineNotify) window.ShineNotify.toast(msg, { tone: tone || 'neutral' });
     }
+    // lift toasts above the floating Sort · Filter bar (bar: 20 px from the bottom, 48 px tall, + 12 px gap)
+    if (window.ShineNotify) window.ShineNotify.configure({ toastBottom: 80 });
+    else document.addEventListener('DOMContentLoaded', function () { if (window.ShineNotify) window.ShineNotify.configure({ toastBottom: 80 }); });
 
     (function setupAuthNudge(){
       var share       = document.getElementById('nudgeShare');
@@ -1767,9 +1751,9 @@ body { background: var(--surface-base, var(--surface-base)); }
                 if (lbl) lbl.textContent = prev || 'Copy';
               }, 1600);
             } catch (_) {
-              if (typeof showToast === 'function') showToast('Copy failed — please copy manually');
+              if (typeof showToast === 'function') showToast('Couldn’t copy the link', 'error');
             }
-            if (typeof showToast === 'function') showToast('Job link copied');
+            if (typeof showToast === 'function') showToast('Job link copied', 'success');
             return;
           }
           var buildUrl = SHARE_URLS[channel];
@@ -2592,7 +2576,7 @@ body { background: var(--surface-base, var(--surface-base)); }
             if (typeof showToast === 'function') showToast(isExt ? 'Opening company site…' : 'Sign up to apply');
             return;
           }
-          if (t.closest('[data-act="share"]')) { e.stopPropagation(); if (typeof showToast === 'function') showToast('Share link copied'); return; }
+          if (t.closest('[data-act="share"]')) { e.stopPropagation(); if (typeof showToast === 'function') showToast('Share link copied', 'success'); return; }
           // Save / bookmark toggle (mobile mirror of the desktop handler).
           var saveBtnM = t.closest('[data-act="save"]');
           if (saveBtnM) {
@@ -2600,7 +2584,7 @@ body { background: var(--surface-base, var(--surface-base)); }
             var savedM = saveBtnM.classList.toggle('is-saved');
             saveBtnM.setAttribute('aria-pressed', savedM ? 'true' : 'false');
             saveBtnM.setAttribute('aria-label', savedM ? 'Saved — remove job' : 'Save job');
-            if (typeof showToast === 'function') showToast(savedM ? 'Job saved' : 'Removed from saved');
+            if (typeof showToast === 'function') showToast(savedM ? 'Job saved' : 'Removed from saved', savedM ? 'success' : 'neutral');
             return;
           }
           if (t.closest('.jsrp-m-jc') && typeof showToast === 'function') showToast('Opens job detail');
@@ -2633,7 +2617,7 @@ body { background: var(--surface-base, var(--surface-base)); }
         history.replaceState(s, '', window.__jsrpUrl(s));
         window.__jsrpPaint(s);
         window.__jsrpReload(s, { keepContext: true });
-        if (typeof showToast === 'function') showToast(e.detail.applied ? 'Filters applied' : 'Filters cleared');
+        if (typeof showToast === 'function') showToast(e.detail.applied ? 'Filters applied' : 'Filters cleared', e.detail.applied ? 'success' : 'neutral');
       });
       // empty state → clear filters (goes through the component so badge + URL stay in sync)
       if (listEl) listEl.addEventListener('click', function(e){
@@ -2921,5 +2905,7 @@ body { background: var(--surface-base, var(--surface-base)); }
   sample(true); schedule();
 })();
 </script>
+<!-- COMPONENT · notify v1.0.0 -->
+<script src="components/notify/notify.js"></script>
 </body>
 </html>

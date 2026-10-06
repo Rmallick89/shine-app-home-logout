@@ -10,6 +10,8 @@
   Shared components (components/ — linked):
            • bottom-sheet v1.1.0 (ShineSheet) — every slide-up panel here
              (OTP = inline CTA, account picker = sticky CTA, demo data = list)
+           • notify v1.0.0 (ShineNotify) — bottom toasts + top floating alerts
+             (server errors → error alert with Try again)
   Page sections  DS atoms · landing (Dial + headline + switch) · page skin ·
            flow script (mock auth: replace the DB / SIM block with the API).
   Linking  login-flow.html?next=<relative url>   return there after log in
@@ -175,6 +177,8 @@
 </style>
 <!-- COMPONENT · bottom-sheet v1.1.0 -->
 <link rel="stylesheet" href="components/bottom-sheet/bottom-sheet.css">
+<!-- COMPONENT · notify v1.0.0 -->
+<link rel="stylesheet" href="components/notify/notify.css">
 <!-- page · DS atoms (button, input, alert, badge, toast) -->
 <style>
 :root{--c-red-50:#FEF2F2; --c-red-200:#FECDCA; --c-green-300:#5DD4A1;
@@ -272,6 +276,8 @@
 .acct.is-selected{border-color:var(--content-neutral-base);box-shadow:0 0 0 var(--size-stroke-thin) var(--content-neutral-base);background:var(--surface-neutral-raised)}
 .acct.is-selected .radio{border-color:var(--content-neutral-base)}
 .acct.is-selected .radio::after{content:"";width:var(--unit-10);height:var(--unit-10);border-radius:50%;background:var(--content-neutral-base)}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-stack-xs) var(--spacing-inline-lg);padding:var(--spacing-inset-xl);border-radius:var(--size-radius-lg);
+  background:var(--surface-neutral-raised);border:var(--size-stroke-thin) solid var(--stroke-neutral-muted)}
 @media (prefers-reduced-motion:reduce){.btn-spinner,.otp-seg.is-focused::after{animation:none}
 }
 .num{word-spacing:.14em;white-space:nowrap}
@@ -288,7 +294,6 @@ a{color:inherit;text-decoration:none;cursor:pointer}
 .ghost-back:active{background:var(--surface-neutral-state-hover)}
 .toast{position:fixed;left:50%;bottom:calc(var(--spacing-section-lg) + env(safe-area-inset-bottom));opacity:0;transform:translate(-50%,12px);
   transition:opacity .2s ease,transform .26s cubic-bezier(.32,.72,0,1);pointer-events:none}
-.toast.is-shown{opacity:1;transform:translate(-50%,0)}
 .bs{max-width:var(--unit-480);margin:0 auto}
 .logo{display:block;background:center/contain no-repeat;aspect-ratio:var(--ar);flex:none}
 @media (min-width:600px){body{background:var(--surface-neutral-warm)}
@@ -314,7 +319,6 @@ a{color:inherit;text-decoration:none}
 .otp-meta .count + .count{display:none}
 .otp-meta .err + .count{margin-left:auto}
 .toast{position:fixed;opacity:0;transform:translate(-50%,12px);transition:opacity .2s ease,transform .26s cubic-bezier(.32,.72,0,1);pointer-events:none}
-.toast.is-shown{opacity:1;transform:translate(-50%,0)}
 .btn[aria-busy="true"]{cursor:progress}
 .btn--secondary[aria-busy="true"]{background:var(--surface-neutral-raised);color:var(--content-neutral-base)}
 .check{background:none;border:0;padding:0}
@@ -416,6 +420,7 @@ a{color:inherit;text-decoration:none}
 .hx-shine{box-shadow:var(--elevation-neutral-overlay);z-index:2}
 .hx-shine .shine-logo{width:62%;height:auto;color:var(--content-neutral-base)}
 .hx-b .be-f{transition:transform .46s cubic-bezier(.34,1.56,.64,1),opacity .28s ease,filter .9s ease}
+.hx-b .be-f.out{transform:scale(.35) rotate(-28deg);opacity:0;transition:transform .22s cubic-bezier(.5,0,.75,0),opacity .18s ease-in}
 @keyframes hxBoop{0%{scale:1}30%{scale:.9}65%{scale:1.06}100%{scale:1}}
 @keyframes hxBob{from{translate:0 0}to{translate:0 var(--bob,3px)}}
 @media (max-height:720px){.scr{--hk:.86}
@@ -682,7 +687,25 @@ html,body{height:auto;overflow:visible;overscroll-behavior:auto}
 .lg .g1{min-height:var(--unit-10)}
 @media (max-height:660px){.lg .g2{min-height:var(--unit-4)}
 }
-   
+.alert--acct{align-items:center;gap:var(--spacing-inline-lg);padding:var(--spacing-inset-lg)}
+.acct-logo{flex:none;align-self:flex-start;width:var(--unit-32);height:var(--unit-32);border-radius:var(--size-radius-full);display:grid;place-items:center;
+  background:var(--surface-neutral-raised);border:var(--size-stroke-thin) solid var(--stroke-status-negative-soft)}
+.acct-logo svg{width:var(--size-icon-md);height:var(--size-icon-md);margin:0}
+.acct-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:var(--unit-2)}
+.acct-title{font-size:var(--type-body-md-size);line-height:var(--type-body-md-lh);font-weight:var(--typeface-weight-bold);color:var(--content-status-negative)}
+.acct-text{color:var(--content-neutral-muted);font-weight:var(--typeface-weight-medium);overflow-wrap:anywhere}
+.acct-text b{color:var(--content-neutral-base);font-weight:var(--typeface-weight-semibold)}
+.alert--acct .acct-cta{flex:none;height:var(--unit-32);padding:0 var(--spacing-inset-lg);border-radius:var(--size-radius-full);
+  font-size:var(--type-label-md-size);line-height:var(--type-label-md-lh);font-weight:var(--typeface-weight-bold);text-decoration:none;
+  transition:transform .12s ease,background-color .15s ease}
+.alert--acct .acct-cta:active{transform:scale(.97)}
+@media (max-height:660px){.lg:has(.lg-alert .alert--acct) .sw-or{margin-top:var(--spacing-stack-xs);margin-bottom:var(--spacing-stack-xs)}
+.lg:has(.lg-alert .alert--acct) .be-foot{padding-top:var(--spacing-stack-md)}
+
+}
+
+
+
 
 </style>
 </head>
@@ -865,10 +888,12 @@ html,body{height:auto;overflow:visible;overscroll-behavior:auto}
 </div>
 </div>
 
-<div class="toast" id="toast" role="status" aria-live="polite" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.7 7.7-5.5 5.6a1 1 0 0 1-1.4 0l-2.5-2.5a1 1 0 1 1 1.4-1.4l1.8 1.8 4.8-4.9a1 1 0 0 1 1.4 1.4z"/></svg><span id="toastMsg"></span></div>
+
 
 <!-- COMPONENT · bottom-sheet v1.1.0 -->
 <script src="components/bottom-sheet/bottom-sheet.js"></script>
+<!-- COMPONENT · notify v1.0.0 -->
+<script src="components/notify/notify.js"></script>
 <script>
 /* ── page config — the hooks other app screens use to link here ──────────── */
 window.ShineLoginConfig = (function () {
@@ -884,7 +909,7 @@ window.ShineLoginConfig = (function () {
   };
 })();
 </script>
-<script>window.__AU_ICONS = {"alert": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5.2c.6 0 1.1.5 1.1 1.1v4.6a1.1 1.1 0 0 1-2.2 0V8.3c0-.6.5-1.1 1.1-1.1zm0 9.9a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6z\"/></svg>", "checkc": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.7 7.7-5.5 5.6a1 1 0 0 1-1.4 0l-2.5-2.5a1 1 0 1 1 1.4-1.4l1.8 1.8 4.8-4.9a1 1 0 0 1 1.4 1.4z\"/></svg>", "check": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" stroke-width=\"3\"><path d=\"M20 6L9 17l-5-5\"/></svg>", "info": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.6a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zm1.1 10.2a1.1 1.1 0 0 1-2.2 0v-4.6a1.1 1.1 0 0 1 2.2 0v4.6z\"/></svg>", "verified": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 1.5l2.4 1.8 3-.2 1 2.8 2.6 1.6-.8 2.9.8 2.9-2.6 1.6-1 2.8-3-.2L12 19.3l-2.4-1.8-3 .2-1-2.8L3 13.3l.8-2.9L3 7.5l2.6-1.6 1-2.8 3 .2L12 1.5zm3.8 7.3a1 1 0 0 0-1.4 0l-3.3 3.3-1.5-1.5a1 1 0 1 0-1.4 1.4l2.2 2.2a1 1 0 0 0 1.4 0l4-4a1 1 0 0 0 0-1.4z\"/></svg>", "eye": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>", "eyeoff": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10.6 5.1A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-2.6 3.6M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6\"/><path d=\"M9.9 9.9a3 3 0 0 0 4.2 4.2\"/><path d=\"M2 2l20 20\"/></svg>"};</script>
+<script>window.__AU_ICONS = {"alert": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5.2c.6 0 1.1.5 1.1 1.1v4.6a1.1 1.1 0 0 1-2.2 0V8.3c0-.6.5-1.1 1.1-1.1zm0 9.9a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6z\"/></svg>", "checkc": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.7 7.7-5.5 5.6a1 1 0 0 1-1.4 0l-2.5-2.5a1 1 0 1 1 1.4-1.4l1.8 1.8 4.8-4.9a1 1 0 0 1 1.4 1.4z\"/></svg>", "check": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" stroke-width=\"3\"><path d=\"M20 6L9 17l-5-5\"/></svg>", "info": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.6a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zm1.1 10.2a1.1 1.1 0 0 1-2.2 0v-4.6a1.1 1.1 0 0 1 2.2 0v4.6z\"/></svg>", "verified": "<svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 1.5l2.4 1.8 3-.2 1 2.8 2.6 1.6-.8 2.9.8 2.9-2.6 1.6-1 2.8-3-.2L12 19.3l-2.4-1.8-3 .2-1-2.8L3 13.3l.8-2.9L3 7.5l2.6-1.6 1-2.8 3 .2L12 1.5zm3.8 7.3a1 1 0 0 0-1.4 0l-3.3 3.3-1.5-1.5a1 1 0 1 0-1.4 1.4l2.2 2.2a1 1 0 0 0 1.4 0l4-4a1 1 0 0 0 0-1.4z\"/></svg>", "eye": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg>", "eyeoff": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10.6 5.1A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-2.6 3.6M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6\"/><path d=\"M9.9 9.9a3 3 0 0 0 4.2 4.2\"/><path d=\"M2 2l20 20\"/></svg>", "google": "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"#4285F4\" d=\"M22.6 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2-1.9 3.3-4.7 3.3-8.1z\"/><path fill=\"#34A853\" d=\"M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8A11 11 0 0 0 12 23z\"/><path fill=\"#FBBC05\" d=\"M5.8 14.2a6.6 6.6 0 0 1 0-4.3V7H2.1a11 11 0 0 0 0 9.9l3.7-2.8z\"/><path fill=\"#EA4335\" d=\"M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7l3.7 2.9C6.7 7.3 9.1 5.4 12 5.4z\"/></svg>"};</script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
    SHINE APP · LOGIN FLOW — behaviour + mock auth (Dial + Switch landing)
@@ -934,12 +959,12 @@ window.ShineLoginConfig = (function () {
   function mmss2(s) { s = Math.max(0, Math.ceil(s)); return ('0' + Math.floor(s / 60)).slice(-2) + ':' + ('0' + (s % 60)).slice(-2); }
   function later(fn, ms) { return setTimeout(fn, ms == null ? LATENCY : ms); }
 
-  var toastTimer;
-  function toast(msg) {
-    var t = $('#toast'); $('#toastMsg').textContent = msg;
-    t.hidden = false; void t.offsetWidth; t.classList.add('is-shown');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { t.classList.remove('is-shown'); setTimeout(function () { t.hidden = true; }, 250); }, 3000);
+  /* toasts + floating alerts come from the shared notify component (App-logout/app-components/notify) */
+  function toast(msg, tone) { if (window.ShineNotify) window.ShineNotify.toast(msg, { tone: tone || 'neutral' }); }
+  /* server error = floating error alert at the top with a retry (same UI family as "Account not found") */
+  function serverAlert(title, retry) {
+    if (window.ShineNotify) window.ShineNotify.alert({ tone: 'error', title: title, text: 'Something went wrong on our side.',
+      action: retry ? { label: 'Try again', onClick: retry } : null });
   }
   function busy(btn, label) {
     var html = btn.innerHTML, dis = btn.disabled;
@@ -951,7 +976,15 @@ window.ShineLoginConfig = (function () {
     return '<div class="alert alert--' + kind + '" role="alert">' + IC[icon || 'alert'] + '<div><span class="alert-title">' + title + '</span><span class="alert-text">' + text + '</span></div></div>';
   }
   function setAlert(slot, html) { $(slot).innerHTML = html || ''; }
-
+  /* Google account with no Shine account (approved sample 4, refined 2026-10-06): red alert ·
+     Google logo top-aligned with the heading · heading + email line · Sign up = DS secondary button (compact pill) */
+  function alertNoAccount(email) {
+    return '<div class="alert alert--negative alert--acct" role="alert">' +
+      '<span class="acct-logo" aria-hidden="true">' + IC.google + '</span>' +
+      '<div class="acct-body"><span class="acct-title">Account not found</span>' +
+      '<span class="acct-text"><b>' + email + '</b> is not linked with Shine.</span></div>' +
+      '<a class="btn btn--secondary acct-cta" href="#" data-act="register">Sign up</a></div>';
+  }
   /* field state: null | 'invalid' | 'valid' | 'helper' */
   function setField(input, state, html) {
     var f = input.closest('.field'), msg = f.querySelector('.field-message, .field-helper');
@@ -1073,7 +1106,7 @@ window.ShineLoginConfig = (function () {
     var done = busy($('#otpBtn'), 'Sending OTP…');
     later(function () {
       done();
-      if (SIM.server) { setAlert('#otpPaneAlert', alertHTML('neutral', 'Couldn’t send OTP', 'Something went wrong on our side. Please try again in a moment.', 'info')); return; }
+      if (SIM.server) { serverAlert('Couldn’t send OTP', function () { $('#otpBtn').click(); }); return; }
       var acc = lookup(idSF);
       if (!acc.length) {
         setField(input, 'invalid', (idSF.mode === 'phone' ? 'No Shine account uses this number.' : 'No account found with this email.') + ' <a href="#" data-act="register">Register instead</a>');
@@ -1147,7 +1180,7 @@ window.ShineLoginConfig = (function () {
     var done = busy(otpBtn, 'Verifying…');
     later(function () {
       done();
-      if (SIM.server && otp.opts && otp.opts.purpose === 'login') { setAlert('#otpAlert', alertHTML('neutral', 'Couldn’t log you in', 'Something went wrong on our side. Please try again in a moment.', 'info')); otpInput.focus(); return; }
+      if (SIM.server && otp.opts && otp.opts.purpose === 'login') { serverAlert('Couldn’t log you in', function () { otpBtn.click(); }); otpInput.focus(); return; }
       if (otpInput.value === DB.otp) {
         clearInterval(otp.timer);
         var o = otp.opts;
@@ -1210,7 +1243,7 @@ window.ShineLoginConfig = (function () {
     var done = busy(pwdBtn, 'Logging in…');
     later(function () {
       done();
-      if (SIM.server) { setAlert('#pwdAlert', alertHTML('neutral', 'Couldn’t log you in', 'Something went wrong on our side. Please try again in a moment.', 'info')); return; }
+      if (SIM.server) { serverAlert('Couldn’t log you in', function () { $('#pwdBtn').click(); }); return; }
       var a = DB.accounts[em];
       if (!a) { setField(emailIn, 'invalid', 'No account found with this email. <a href="#" data-act="register">Register instead</a>'); emailIn.focus(); return; }
       if (a.locked || (pwdTries[em] || 0) >= 3) {
@@ -1244,9 +1277,9 @@ window.ShineLoginConfig = (function () {
       var done = busy(b, 'Connecting to Google…');
       later(function () {
         done();
-        if (SIM.server) { setAlert('#socialAlert', alertHTML('neutral', 'Couldn’t log you in', 'Something went wrong on our side. Please try again in a moment.', 'info')); return; }
+        if (SIM.server) { serverAlert('Couldn’t log you in', function () { b.click(); }); return; }
         if (SIM.google) {
-          setAlert('#socialAlert', alertHTML('negative', 'No Shine account for r.lingam@gmail.com', 'We couldn’t find this Google email on Shine. <a href="#" data-act="register">Register</a> or log in with OTP.'));
+          setAlert('#socialAlert', alertNoAccount('r.lingam@gmail.com'));
           return;
         }
         loginSuccess(DB.accounts['ramaraj.lingam@gmail.com'], p);
@@ -1333,7 +1366,7 @@ window.ShineLoginConfig = (function () {
     emailIn.value = acc ? acc.email : ''; pwdIn.value = ''; pwdIn.type = 'password'; setField(emailIn, null); setField(pwdIn, null); pwdReady();
     if (acc) pwdTries[acc.email] = 0;
     pwdIn.focus();
-    toast('Password updated. Log in with your new one');
+    toast('Password updated. Log in with your new one', 'success');
   }
 
   /* ── success ──────────────────────────────────────────────────────── */
@@ -1367,7 +1400,7 @@ window.ShineLoginConfig = (function () {
       case 'otp-change': e.preventDefault(); var back = otp.opts && otp.opts.purpose === 'reset' ? $('#fpInput') : $('#idInput');
         window.ShineSheet.close('#otpSheet', 'change'); setTimeout(function () { back.focus(); try { back.select(); } catch (x) {} }, 300); break;
       case 'resend': otpInput.value = ''; otpWrap.classList.remove('otp--invalid'); otpBtn.disabled = true; renderBoxes(); startTimer();
-        toast('OTP sent again to ' + (otp.opts ? otp.opts.to : 'you')); otpInput.focus(); break;
+        toast('OTP sent again to ' + (otp.opts ? otp.opts.to : 'you'), 'success'); otpInput.focus(); break;
       case 'use-password': e.preventDefault(); window.ShineSheet.close('#otpSheet', 'password'); setTab('pwd');
         if (otp.opts && otp.opts.account) { emailIn.value = otp.opts.account.email; pwdReady(); }
         setTimeout(function () { pwdIn.focus(); }, 300); break;
@@ -1387,7 +1420,7 @@ window.ShineLoginConfig = (function () {
   function useDemo(kind, v) {
     var inSheet = window.ShineSheet.isOpen('#guideSheet');
     if (kind === 'otp-code') {
-      if (!window.ShineSheet.isOpen('#otpSheet') || otpInput.disabled) { toast('Request an OTP first, then use this code'); return; }
+      if (!window.ShineSheet.isOpen('#otpSheet') || otpInput.disabled) { toast('Request an OTP first, then use this code', 'warning'); return; }
       window.ShineSheet.close('#guideSheet', 'use');
       otpInput.value = v; otpInput.dispatchEvent(new Event('input')); glow($('#otpBoxes'));
       setTimeout(function () { otpBtn.focus(); }, inSheet ? 320 : 0); return;
@@ -1415,9 +1448,9 @@ window.ShineLoginConfig = (function () {
       var it = b.closest('.g-item'), v = it.getAttribute('data-value');
       if (b.getAttribute('data-g') === 'use') return useDemo(it.getAttribute('data-kind'), v);
       copyText(v, b.closest('.bs, .guide') || doc.body).then(function () {
-        b.classList.add('is-done'); b.innerHTML = IC.check; toast('Copied ' + it.querySelector('.g-v').textContent);
+        b.classList.add('is-done'); b.innerHTML = IC.check; toast('Copied ' + it.querySelector('.g-v').textContent, 'success');
         clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove('is-done'); b.innerHTML = COPY_IC; }, 1400);
-      }, function () { toast('Couldn’t copy. Tap Use instead'); });
+      }, function () { toast('Couldn’t copy. Tap Use instead', 'error'); });
       return;
     }
     var t = e.target.closest('[data-sim]'); if (t) {

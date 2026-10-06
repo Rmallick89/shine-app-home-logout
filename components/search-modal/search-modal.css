@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   SHINE · SEARCH MODAL  (app component)                       v1.1.0
+   SHINE · SEARCH MODAL  (app component)                       v1.3.0
    "What's next for you?" — keyword · location · experience → Search Jobs
    ───────────────────────────────────────────────────────────────────────
    Ported from the JSRP "Edit search" overlay (jsrp/JSRP-Index.html,
@@ -19,6 +19,10 @@
    • v1.1.0 — fields use the same A.01 Input spec as the login flow
      (md 44 · white fill · 12px inset · medium-weight placeholder ·
      brand-600 border + 3px brand ring on focus).
+   • v1.2.0 — the validation alert sits OUTSIDE the card, 12px below it,
+     as a solid floating alert (readable on the scrim); shorter copy.
+   • v1.3.0 — toasts go through ShineNotify (app-components/notify) when the
+     page has it; .ssm-toast below is only the stand-alone fallback.
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* ── Scoped tokens ─────────────────────────────────────────────────── */
@@ -117,9 +121,12 @@
 .ssm.is-open { opacity: 1; }
 html.ssm-lock, html.ssm-lock body { overflow: hidden !important; }
 
+/* ── Dialog = card + the alert that floats below it ────────────────── */
+.ssm-dialog { position: relative; width: 100%; max-width: 480px; flex: none; }
+
 /* ── Card ──────────────────────────────────────────────────────────── */
 .ssm-card {
-  position: relative; width: 100%; max-width: 480px; flex: none;
+  position: relative; width: 100%;
   background: var(--ssm-surface-raised);
   border-radius: var(--ssm-radius-2xl);
   padding: var(--ssm-section-md) var(--ssm-section-sm) var(--ssm-section-sm);
@@ -135,7 +142,7 @@ html.ssm-lock, html.ssm-lock body { overflow: hidden !important; }
   background: radial-gradient(ellipse at top right, var(--ssm-c-brand-500-op12), transparent 65%);
 }
 @keyframes ssm-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 50%{transform:translateX(6px)} 75%{transform:translateX(-3px)} }
-.ssm-card.is-shaking { animation: ssm-shake 360ms ease; }
+.ssm-dialog.is-shaking { animation: ssm-shake 360ms ease; }
 
 /* Close — circular, warm well (Button · icon-only, compact) */
 .ssm-close {
@@ -236,18 +243,22 @@ html.ssm-lock, html.ssm-lock body { overflow: hidden !important; }
   font-size: var(--ssm-body-sm-size); line-height: var(--ssm-body-sm-lh); color: var(--ssm-content-faded); }
 .ssm-option-empty b { color: var(--ssm-content-base); font-weight: var(--ssm-w-bold); }
 
-/* ── Error (A.07 Alert · negative) — inside the card, collapses when hidden ── */
-.ssm-error-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 220ms ease; }
-.ssm-error-wrap.is-shown { grid-template-rows: 1fr; }
-.ssm-error-wrap > div { overflow: hidden; }
-.ssm-error {
-  display: flex; align-items: flex-start; gap: var(--ssm-inline-md);
-  margin-top: var(--ssm-stack-md); padding: var(--ssm-inset-md) var(--ssm-inset-lg);
-  background: var(--ssm-surface-negative-subtle); border: var(--ssm-stroke-thin) solid var(--ssm-stroke-negative);
-  border-radius: var(--ssm-radius-lg); color: var(--ssm-content-negative);
-  font-size: var(--ssm-body-sm-size); line-height: var(--ssm-body-sm-lh); font-weight: var(--ssm-w-semibold);
+/* ── Error (A.07 Alert · negative) — floats 12px below the card, outside it (v1.2.0) ──
+   solid fill + overlay shadow so it reads clearly on the dimmed, blurred scrim */
+.ssm-error-wrap {
+  margin-top: var(--ssm-stack-md); pointer-events: none;
+  opacity: 0; visibility: hidden; transform: translateY(calc(-1 * var(--ssm-inset-sm)));
+  transition: opacity 200ms ease, transform 260ms var(--ssm-ease-out), visibility 0s linear 260ms;
 }
-.ssm-error svg { width: var(--ssm-icon-md); height: var(--ssm-icon-md); flex: none; margin-top: 1px; }
+.ssm-error-wrap.is-shown { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.ssm-error {
+  display: flex; align-items: center; gap: var(--ssm-inline-md); margin: 0;
+  padding: var(--ssm-inset-lg) var(--ssm-inset-xl);
+  background: var(--ssm-surface-negative-subtle); border: var(--ssm-stroke-thin) solid var(--ssm-stroke-negative);
+  border-radius: var(--ssm-radius-lg); color: var(--ssm-content-negative); box-shadow: var(--ssm-elev-overlay);
+  font-size: var(--ssm-body-md-size); line-height: var(--ssm-body-md-lh); font-weight: var(--ssm-w-semibold);
+}
+.ssm-error svg { width: var(--ssm-icon-md); height: var(--ssm-icon-md); flex: none; }
 
 /* ── Submit (A.02 Button · Primary · Brand · lg 48 · block) ─────────── */
 .ssm-submit {
@@ -282,5 +293,5 @@ html.ssm-lock, html.ssm-lock body { overflow: hidden !important; }
 
 @media (prefers-reduced-motion: reduce) {
   .ssm, .ssm-card, .ssm-dropdown, .ssm-error-wrap, .ssm-toast { transition: none !important; }
-  .ssm-card.is-shaking { animation: none; }
+  .ssm-dialog.is-shaking { animation: none; }
 }

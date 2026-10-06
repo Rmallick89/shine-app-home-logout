@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   SHINE · SEARCH MODAL  (app component)                       v1.1.0
+   SHINE · SEARCH MODAL  (app component)                       v1.3.0
    Pair with search-modal.css. Zero dependencies, no build step.
 
    Open it from anywhere — three equivalent ways:
@@ -54,7 +54,7 @@
     title: "What's next for",          // plain text …
     titleAccent: 'you?',               // … + brand-coloured tail
     submitLabel: 'Search Jobs',
-    errorText: 'Add a role, a city or your experience to start your search.',
+    errorText: 'Add a role, city or experience to search.',
     placeholders: { keyword: 'Job title, skill, or keyword', location: 'Location', experience: 'Experience' },
     resultsUrl: null,                  // set to navigate on submit: url?q=…&loc=…&exp=…
     toast: true,                       // confirmation toast when nothing else handles submit
@@ -63,7 +63,7 @@
   };
   var cfg = merge({}, DEFAULTS, global.ShineSearchConfig || {});
   var session = cfg;                   // per-open options layered on cfg
-  var root, card, els = {}, lastFocus = null, closeTimer = null, toastTimer = null;
+  var root, card, dialog, els = {}, lastFocus = null, closeTimer = null, toastTimer = null;
   var SEP = ', ';
 
   function merge(t) {
@@ -98,7 +98,8 @@
     root.className = 'ssm';
     root.setAttribute('aria-hidden', 'true');
     root.innerHTML =
-      '<div class="ssm-card" role="dialog" aria-modal="true" aria-labelledby="ssm-title">' +
+      '<div class="ssm-dialog" role="dialog" aria-modal="true" aria-labelledby="ssm-title">' +
+      '<div class="ssm-card">' +
         '<button class="ssm-close" type="button" aria-label="Close search">' + I.close + '</button>' +
         '<p class="ssm-eyebrow"><span class="ssm-eyebrow-dot" aria-hidden="true"></span><span data-ssm="eyebrow"></span></p>' +
         '<h2 class="ssm-title" id="ssm-title"></h2>' +
@@ -113,12 +114,14 @@
             '<div class="ssm-dropdown" id="ssm-list-experience" role="listbox" aria-label="Total experience"></div>' +
           '</div>' +
         '</div>' +
-          '<div class="ssm-error-wrap" aria-live="assertive"><div><p class="ssm-error" role="alert">' + I.alert + '<span data-ssm="error"></span></p></div></div>' +
           '<button class="ssm-submit" type="button">' + I.search + '<span data-ssm="submit"></span></button>' +
         '</div>' +
+      '</div>' +
+      // validation alert floats just below the card (v1.2.0), still inside the dialog for screen readers
+      '<div class="ssm-error-wrap" aria-live="assertive"><div><p class="ssm-error" role="alert">' + I.alert + '<span data-ssm="error"></span></p></div></div>' +
       '</div>';
     doc.body.appendChild(root);
-    card = root.querySelector('.ssm-card');
+    card = root.querySelector('.ssm-card'); dialog = root.querySelector('.ssm-dialog');
     els = {
       close: root.querySelector('.ssm-close'),
       eyebrow: root.querySelector('[data-ssm="eyebrow"]'),
@@ -169,8 +172,8 @@
   }
   function showError() {
     els.errWrap.classList.add('is-shown');
-    card.classList.remove('is-shaking'); void card.offsetWidth; card.classList.add('is-shaking');
-    setTimeout(function () { card.classList.remove('is-shaking'); }, 400);
+    dialog.classList.remove('is-shaking'); void dialog.offsetWidth; dialog.classList.add('is-shaking');
+    setTimeout(function () { dialog.classList.remove('is-shaking'); }, 400);
   }
   function hideError() { els.errWrap.classList.remove('is-shown'); }
 
@@ -334,7 +337,9 @@
     if (session.toast) toast('Searching ' + (detail.query || 'jobs') + (detail.location ? ' in ' + detail.location : '') + (exp ? ' · ' + exp : ''));
   }
 
-  function toast(msg) {
+  function toast(msg, tone) {
+    // v1.3.0: the app-wide notify component owns toasts when it is on the page (same pill everywhere)
+    if (global.ShineNotify) return global.ShineNotify.toast(msg, { tone: tone || 'neutral' });
     var t = doc.querySelector('.ssm-toast');
     if (!t) { t = doc.createElement('div'); t.className = 'ssm-toast'; t.setAttribute('role', 'status'); doc.body.appendChild(t); }
     t.innerHTML = I.check + '<span>' + esc(msg) + '</span>';
@@ -370,7 +375,7 @@
     els.keyword.placeholder = session.placeholders.keyword;
     els.location.placeholder = session.placeholders.location;
     // state — always start clean (JSRP left the last dropdown open between opens)
-    closeDropdowns(); hideError(); card.classList.remove('is-shaking');
+    closeDropdowns(); hideError(); dialog.classList.remove('is-shaking');
     els.keyword.value = list(opts.keyword).join(SEP);
     els.location.value = list(opts.location).join(SEP);
     setExperience(opts.experience && session.experienceOptions.indexOf(opts.experience) > -1 ? opts.experience : '');
@@ -424,7 +429,7 @@
 
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', mount); else mount();
 
-  global.ShineSearch = { open: open, close: close, configure: configure, isOpen: isOpen, toast: toast, version: '1.1.0' };
+  global.ShineSearch = { open: open, close: close, configure: configure, isOpen: isOpen, toast: toast, version: '1.3.0' };
   // drop-in for pages already calling the JSRP overlay API
   if (typeof global.openSearchOverlay !== 'function') {
     global.openSearchOverlay = function (prefill) { open(prefill ? merge({ mode: 'edit', source: 'jsrp' }, prefill) : {}); };

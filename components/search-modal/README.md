@@ -63,7 +63,7 @@ The fields use 14px text, and iOS Safari zooms the whole page when a focused fie
 ShineSearch.open({ keyword: 'Product Manager', location: 'India', mode: 'edit', source: 'jsrp' });
 ShineSearch.close();
 ShineSearch.isOpen();
-ShineSearch.toast('Saved');                 // DS A.09 toast, reused by the component
+ShineSearch.toast('Saved');                 // DS A.09 toast — via ShineNotify when the page has it
 ShineSearch.configure({ resultsUrl: '/jsrp' });   // app-wide defaults (or set window.ShineSearchConfig before the script)
 ```
 
@@ -76,7 +76,7 @@ ShineSearch.configure({ resultsUrl: '/jsrp' });   // app-wide defaults (or set w
 | `eyebrow` | `Find your next role` | |
 | `title` / `titleAccent` | `What's next for` / `you?` | Accent renders in brand blue. |
 | `submitLabel` | `Search Jobs` | |
-| `errorText` | `Add a role, a city or your experience to start your search.` | |
+| `errorText` | `Add a role, city or experience to search.` | |
 | `placeholders` | `{ keyword, location, experience }` | |
 | `roles`, `locations`, `experienceOptions` | JSRP lists | Swap for API-backed lists later. |
 | `minChars` | `2` | Typed characters before suggestions open. |
@@ -119,7 +119,7 @@ On submit the order is:
 
 ## Changes from the JSRP overlay
 
-- **Error placement:** the error now sits *inside* the card as a DS A.07 negative alert. JSRP put red text on the dark scrim, where it was hard to read.
+- **Error placement:** the error is a solid DS A.07 negative alert that floats 12 px *below* the card (v1.2.0; it sat inside the card in v1.0–1.1). JSRP put bare red text on the dark scrim, where it was hard to read.
 - **Clean reopen:** every open starts clean. JSRP left the last dropdown open between opens.
 - **Edit mode:** set only when the caller asks (`data-shine-search="edit"`). Prefilling a city doesn't make it an "edit".
 - **Keyboard:**
@@ -145,5 +145,7 @@ On submit the order is:
 
 ## Changelog
 
+- **v1.3.0** — `ShineSearch.toast()` hands off to the app-wide **notify** component (`ShineNotify.toast`) when the page includes it, so every toast in the app is the same pill; the built-in `.ssm-toast` stays as the stand-alone fallback. No visual change inside the modal.
+- **v1.2.0** — the validation alert moved out of the card: it now floats 12 px below it as a solid alert with a shadow, easy to read on the scrim. Copy shortened to “Add a role, city or experience to search.” Markup: the card and the alert are wrapped in `.ssm-dialog` (which now carries `role="dialog"`); the shake moves the whole dialog.
 - **v1.1.0** — fields now match the login flow's input exactly: height 48 → 44, beige fill → white, 16 → 12 px inset, placeholder weight 400 → 500, focus border brand-500 → brand-600 with a 3 px brand ring at 18 % (was 4 px at 10 %), hover tint removed. No markup, API or behaviour changes.
 - **v1.0.0** — first version, ported from the JSRP Edit search overlay.
