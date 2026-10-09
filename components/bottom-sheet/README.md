@@ -134,7 +134,7 @@ It follows the WAI-ARIA dialog pattern plus iOS/Material sheet conventions:
 
 ## Keyboard and status bar (v1.2)
 
-- **On-screen keyboard:** iOS Safari slides the keyboard over the page instead of resizing it, so a sheet with a field (the OTP sheet) ended up under the keyboard. While any sheet is open, ShineSheet follows `visualViewport` and lifts the sheet so it sits on the keyboard's top edge (`--bs-kb`), caps its height to the visible area (`--bs-vvh`, 16 px clear of the top) and drops the home-indicator padding while the keyboard is up (`html.bs-kb`). Android resizes the page itself, so nothing changes there.
+- **On-screen keyboard:** iOS Safari slides the keyboard over the page instead of resizing it, so a sheet with a field (the OTP sheet) ended up under the keyboard. While any sheet is open, ShineSheet follows `visualViewport`. The sheet stays on the bottom edge and its white surface continues behind the keyboard, like a native iOS sheet; its content is padded up by the keyboard height (`--bs-kb`), so the last control sits a gutter above the keyboard. Its visible part is capped to the visible area (`--bs-vvh`, 16 px clear of the top), and the home-indicator padding is dropped while the keyboard is up (`html.bs-kb`). Android resizes the page itself, so nothing changes there.
 - **Status bar:** iOS 26 Safari colours the status bar from the background-color of the body, or of a fixed element at the top edge, and ignores that element's opacity. A faded-out scrim therefore left a grey status bar on the next screen. Scrims now paint with a background image (never background-color) and are `display:none` once faded out. While a scrim is up, ShineSheet gives html/body the page colour dimmed by it, so the status bar dims with the page and is restored on close.
 
 ## Tokens
@@ -158,6 +158,7 @@ Values are snapped to `design-system/DESIGN-SYSTEM.md`:
 
 ## Changelog
 
+- **1.2.1** — iOS keyboard: the sheet no longer lifts off the bottom edge (that left a dimmed gap around iOS 26's floating keyboard and accessory bar); its surface runs on behind the keyboard and only the content is padded up.
 - **1.2.0** — Keyboard-aware (rides above the on-screen keyboard, height capped to the visible area) and iOS 26 status-bar tint (scrims paint as an image layer, hidden once faded, html/body dimmed while open). No markup or API changes.
 - **1.1.0** — Call-to-action behaviours: `.bs-actions` inline (in the body) or sticky (in the foot), `data-bs-cta="inline|sticky|auto"`, `data-bs-cta-state`, `shine:sheet-cta`, `ShineSheet.refresh()`, `.bs-actions--row`, `.bs-body--gutter`. Existing sheets are unchanged (JSRP sheets verified pixel-identical).
 - **1.0.0** — First release.
