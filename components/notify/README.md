@@ -96,7 +96,7 @@ ShineNotify.configure({ alertTop: 12 });      // px below the safe area
 
 | Screen | What |
 |---|---|
-| App login — `login-flow.html` | toasts (demo data copy, OTP resent, password updated, coming-soon links); **error alerts** for every server error (Get OTP, OTP check, password, Google) with **Try again** |
+| App login — `login-flow.html` | toasts (demo data copy, OTP resent, coming-soon links); **error alerts** for every server error (Get OTP, OTP check, password, Google) — informative, no button; **success alert** "Password reset successfully" when a reset lands back on log in |
 | App JSRP — `jsrp-logout.html` | toasts (job saved, link copied, filters applied, opens…) lifted above the Sort · Filter bar |
 | App home — `index.html` | toasts from the search modal |
 | Search modal component | `ShineSearch.toast()` delegates here when ShineNotify is on the page |
