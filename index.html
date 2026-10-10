@@ -43,6 +43,19 @@
 <link rel="stylesheet" href="components/search-modal/search-modal.css">
 <!-- COMPONENT · notify v1.0.0 -->
 <link rel="stylesheet" href="components/notify/notify.css">
+<style data-screen-margin>
+/* ── Screen margin = the JSRP page's gutter (2026-10-10): content sits 24px (DS spacing.layout.sm) from the left and right
+   screen edge, as on jsrp-logout.html. Horizontal only; backgrounds and decorative art may still run edge to edge. ── */
+:root{--screen-margin:var(--spacing-layout-sm,24px)}
+/* homepage: app bar · headline · CTAs + legal */
+html .appbar,html .copy,html .foot{padding-left:var(--screen-margin);padding-right:var(--screen-margin)}
+</style>
+<style data-spacing>
+/* ── Spacing follows the JSRP page (2026-10-10 audit). ── */
+/* Log in · Sign up 8px apart (JSRP card actions / filter footer) · 24px bottom inset (JSRP results / sheets) */
+html .cta-row{gap:var(--spacing-inline-md)}
+html .foot{padding-bottom:max(var(--spacing-section-md),env(safe-area-inset-bottom))}
+</style>
 </head>
 <body>
 

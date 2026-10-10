@@ -106,7 +106,7 @@ On submit the order is:
 
 ## Behaviour, kept from JSRP
 
-- Scrim at 55% black with an 8 px blur. The card is anchored to the **top** with a 16 px gutter, so the keyboard never covers the fields.
+- Scrim at 55% black with an 8 px blur. The card is anchored to the **top** with a 24 px gutter (the JSRP page gutter), so the keyboard never covers the fields.
 - **Tapping the backdrop does not close the modal**, so a mis-tap doesn't wipe typed input. You can close it with ✕ or Escape.
 - **Keyword and location** are multi-value combos.
   - Suggestions appear after 2 characters, with the matching part in bold brand.
@@ -145,6 +145,7 @@ On submit the order is:
 
 ## Changelog
 
+- **v1.3.1** — spacing follows the JSRP page: 24 px screen gutter around the card (was 16), card padding 24 all round (was 24 · 20 · 20), close disc 16 px from the top and right (was 14), heading → fields 28 px (was 20) and fields → Search Jobs 24 px (was 12) — the JSRP sheets' heading → content and content → button gaps. CSS only.
 - **v1.3.0** — `ShineSearch.toast()` hands off to the app-wide **notify** component (`ShineNotify.toast`) when the page includes it, so every toast in the app is the same pill; the built-in `.ssm-toast` stays as the stand-alone fallback. No visual change inside the modal.
 - **v1.2.0** — the validation alert moved out of the card: it now floats 12 px below it as a solid alert with a shadow, easy to read on the scrim. Copy shortened to “Add a role, city or experience to search.” Markup: the card and the alert are wrapped in `.ssm-dialog` (which now carries `role="dialog"`); the shake moves the whole dialog.
 - **v1.1.0** — fields now match the login flow's input exactly: height 48 → 44, beige fill → white, 16 → 12 px inset, placeholder weight 400 → 500, focus border brand-500 → brand-600 with a 3 px brand ring at 18 % (was 4 px at 10 %), hover tint removed. No markup, API or behaviour changes.

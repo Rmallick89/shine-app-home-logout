@@ -18,7 +18,7 @@
 </script>
 <meta name="theme-color" content="#0D1117">
 <meta name="color-scheme" content="dark">
-<!-- SHINE APP · SPLASH · Sunrise — a low horizon light rises, the logo arcs settle in, "Rise and shine."
+<!-- SHINE APP · SPLASH · Sunrise — a low horizon light rises and the logo arcs settle in.
      shine-app-home-logout (web) · opens index.html. Plays once (≈ 2 s), then replaces itself with ?to=<same-site URL> or "index.html".
      Dark (#0D1117) from the first paint so the phone status bar matches; ?loop=1 replays (review). -->
 <title>Shine</title>
@@ -270,6 +270,9 @@ html.out .sp-stage{animation:spOut .42s cubic-bezier(.4,0,.2,1) forwards}
 
 html.out .sp-stage{animation-duration:.32s}
 
+/* final: logo a little smaller (was min(44vw,172px)), no tagline */
+.s03r .sp-logo,.sm .sp-logo{width:min(38vw,148px)}
+
 </style>
 </head>
 <body>
@@ -283,7 +286,7 @@ html.out .sp-stage{animation-duration:.32s}
 <path class="a-y" d="M111.367 38C151.563 38 186.076 62.3239 200.993 97.0547C196.523 97.1799 192.397 98.1007 188.614 99.8174C174.186 68.2516 142.335 46.3175 105.36 46.3174C61.9889 46.3174 25.6667 76.4962 16.2451 117H15.6201C24.2635 71.9991 63.8449 38 111.367 38Z" fill="var(--c-logo-yellow)"/>
 <path class="a-b" d="M119.367 27C167.02 27 207.291 58.5937 220.382 101.977C218.896 101.024 217.289 100.2 215.559 99.5078C212.244 98.1144 208.508 97.3131 204.352 97.0996C189.475 61.2298 154.118 36 112.867 36C64.338 36 23.9658 70.918 15.501 117H15C22.497 66.0825 66.3669 27 119.367 27Z" fill="var(--c-brand-500)"/>
 </svg>
-<p class="tag">Rise and shine.</p></div></div>
+</div></div>
 <script>
 
 /* hand-over: play (≤ 1500 ms) → fade to ink → location.replace(next).  next = ?to=<same-site URL> or the default.

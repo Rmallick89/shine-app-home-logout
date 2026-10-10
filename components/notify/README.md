@@ -5,7 +5,7 @@ Two floating nudges for every screen of the Shine app, as one reusable component
 | Kind | Where | Look | Use for |
 |---|---|---|---|
 | **Toast** | bottom, centred | small **dark pill**; one background (inverse black), the tone shows only in the **icon colour** | quick confirmations of what just happened: "Resume uploaded successfully", "Link copied", "Job saved" |
-| **Alert** | top, full width (16 px gutters, max 480) | contextual card — icon disc · title · text · optional action — **coloured by tone** (the "Account not found" look) | results that need a moment of attention: server errors, "Couldn't send OTP", "Profile updated", "Session ends soon" |
+| **Alert** | top, full width (24 px gutters — the JSRP page gutter, max 480) | contextual card — icon disc · title · text · optional action — **coloured by tone** (the "Account not found" look) | results that need a moment of attention: server errors, "Couldn't send OTP", "Profile updated", "Session ends soon" |
 
 Tones (both kinds): `success` · `warning` · `error` · `brand` · `neutral` (DS intents positive · notice · negative · info · neutral).
 
@@ -103,4 +103,5 @@ ShineNotify.configure({ alertTop: 12 });      // px below the safe area
 
 ## Changelog
 
+- **v1.0.1** — screen-edge gutter 16 → 24 px (`--sn-gutter`), matching the JSRP page gutter. CSS only.
 - **v1.0.0** — first version: toast (5 tones by icon) + floating alert (5 tones by colour), replace-one, pausable timer, swipe/tap/Escape dismiss, `shine:notify` event, `configure()` offsets.
